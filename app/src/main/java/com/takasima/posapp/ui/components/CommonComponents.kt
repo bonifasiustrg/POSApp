@@ -69,10 +69,10 @@ fun HeadingTextComponent3(value: String) {
 }
 
 @Composable
-fun WidthButton(value: String, onClick: () -> Unit) {
+fun WidthButton(value: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Button(colors = ButtonDefaults.buttonColors(containerColor = Primary),
         onClick = { onClick() },
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         Text(text = value)
     }
