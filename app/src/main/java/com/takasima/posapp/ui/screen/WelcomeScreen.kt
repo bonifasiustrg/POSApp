@@ -50,9 +50,9 @@ fun Welcome(navController: NavController) {
             navController.navigate("login_screen")
         })
         Spacer(modifier = Modifier.padding(8.dp))
-        WidthButtonInverse(value = "REGISTER", onClick = {
+        /*WidthButtonInverse(value = "REGISTER", onClick = {
             navController.navigate("register_screen")
-        })
+        })*/
     }
 }
 

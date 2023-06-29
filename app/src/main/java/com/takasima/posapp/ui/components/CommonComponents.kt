@@ -57,7 +57,7 @@ fun NormalTextComponent(value: String) {
 fun HeadingTextComponent3(value: String) {
     Text(text = value,
         modifier = Modifier
-            .fillMaxWidth()
+//            .fillMaxWidth()
             .heightIn(),
         style = TextStyle(
             fontSize = 16.sp,
