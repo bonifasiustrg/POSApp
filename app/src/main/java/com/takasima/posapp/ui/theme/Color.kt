@@ -12,8 +12,10 @@ val Pink40 = Color(0xFF7D5260)
 
 // Custom Color
 val Primary/*Deep_Aquamarine*/ = Color(0xFF3E8765)
+val PrimarySecond = Color(0xFF4FAB80)
 val Secondary/*Eton_Blue*/ = Color(0xFF8DC6AE)
-val Neutral/*Gainsboro*/ = Color(0xFFDDDDDD)
+//val Neutral/*Gainsboro*/ = Color(0xFFDDDDDD)
+val Neutral/*Gainsboro*/ = Color(0xFFF7F7F7)
 val May_Green = Color(0xFF4A934A)
 val Orange = Color(0xFFFF8303)
 val Coral_Red = Color(0xFFF44336)

@@ -16,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.takasima.posapp.R
 import com.takasima.posapp.ui.components.HeadingTextComponent3
@@ -24,7 +25,9 @@ import com.takasima.posapp.ui.components.WidthButton
 import com.takasima.posapp.ui.components.WidthButtonInverse
 
 @Composable
-fun Welcome(navController: NavController) {
+fun WelcomeScreen(navController:NavHostController) {
+//    val navController = rememberNavController()
+
     Text(text = "Welcome Screen")
 
     Column(modifier = Modifier
@@ -59,5 +62,4 @@ fun Welcome(navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun OnBoardingScreenPrev() {
-    Welcome(navController = rememberNavController())
 }

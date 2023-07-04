@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.takasima.posapp.R
 import com.takasima.posapp.ui.components.HeadingTextComponent3
@@ -40,7 +41,9 @@ import com.takasima.posapp.ui.components.WidthButton
 import com.takasima.posapp.ui.theme.Typography
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(navController: NavHostController) {
+//    val navController = rememberNavController()
+
     Text(text = "Login Screen")
     val email = remember {
         mutableStateOf("")
@@ -75,7 +78,7 @@ fun LoginScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(48.dp))
             WidthButton(value = "LOGIN", onClick = {
-                navController.navigate("dashboard_screen")
+                navController.navigate("posapp")
             })
 
 //            LoginButtonComponent(email, password, navController)
@@ -98,20 +101,20 @@ fun LoginButtonComponent(email: MutableState<String>, password: MutableState<Str
     }
 }
 
-@Composable
+/*@Composable
 fun RegisterButtonComponent(navController: NavController) {
-    Button(colors = ButtonDefaults.buttonColors(Color.White), border = BorderStroke(1.dp, Color.Gray), onClick = {
-        navController.navigate("signup_page") {
+    Button(colors = ButtonDefaults.buttonColors(Color.White), border = BorderStroke(1.dp, Color.Gray),
+        onClick = {
+        navController.navigate("posapp") {
             popUpTo(navController.graph.startDestinationId)
             launchSingleTop = true
         }
     }) {
         Text(text = "REGISTER", color = Color.Black)
     }
-}
+}*/
 
 @Preview
 @Composable
 fun LoginPrev() {
-    LoginScreen(navController = rememberNavController())
 }

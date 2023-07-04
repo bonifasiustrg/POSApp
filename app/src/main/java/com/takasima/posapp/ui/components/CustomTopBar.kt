@@ -55,7 +55,7 @@ import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
 @Composable
-fun CustomTopBar(
+fun CustomTopBar(title:String="Title",
     snackbarHostState: SnackbarHostState, coroutineScope: CoroutineScope,
     drawerState: DrawerState, openDialog: MutableState<Boolean>
 ) {
@@ -80,17 +80,17 @@ fun CustomTopBar(
                     .fillMaxSize()
 //                    .padding(8.dp)
             ) {
-                IconButton(onClick = {
+                /*IconButton(onClick = {
                     coroutineScope.launch {
 //                        snackbarHostState.showSnackbar("Snackbar")
                         drawerState.open()
                     }
                 }) {
                     Icon(imageVector = Icons.Default.Menu, contentDescription = "Menu Draw")
-                }
-                Text(text = "Beranda", fontSize = 16.sp,
+                }*/
+                Text(text = title/*"Beranda"*/, fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Start,
                     modifier = Modifier.weight(2f)
                 )
 
@@ -102,15 +102,15 @@ fun CustomTopBar(
 //                        modifier = Modifier.padding(horizontal = 8.dp)
                     )
                 }
-                IconButton(onClick = { /*TODO*/ }) {
+                /*IconButton(onClick = { *//*TODO*//* }) {
 
                     Icon(
                         imageVector = Icons.Outlined.Search,
                         contentDescription = "Notifications icon",
 //                        modifier = Modifier.padding(horizontal = 8.dp)
                     )
-                }
-                Image(painter = painterResource(id = R.drawable.profile_photo), contentDescription = "",
+                }*/
+                Image(painter = painterResource(id = R.drawable.profile), contentDescription = "",
                     modifier = Modifier
                         .size(35.dp)
                         .clip(CircleShape)
