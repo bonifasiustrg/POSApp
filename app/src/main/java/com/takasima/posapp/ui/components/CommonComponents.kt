@@ -107,8 +107,7 @@ fun MyTextFieldComponent(labelValue: String, icon: ImageVector, textValue: Mutab
     TextField(value = textValue.value,
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(50))
-            .height(48.dp),
+            .clip(RoundedCornerShape(50)),
         label = { Text(text = labelValue)},
         keyboardOptions = KeyboardOptions.Default,
         onValueChange = {

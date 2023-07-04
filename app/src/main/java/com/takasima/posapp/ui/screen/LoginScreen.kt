@@ -32,23 +32,31 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.loginflow.data.SignInRequest
+import com.example.loginflow.data.SignInResponse
 import com.takasima.posapp.R
+import com.takasima.posapp.Retro
+import com.takasima.posapp.UserApi
 import com.takasima.posapp.ui.components.HeadingTextComponent3
 import com.takasima.posapp.ui.components.MyTextFieldComponent
 import com.takasima.posapp.ui.components.NormalTextComponent
 import com.takasima.posapp.ui.components.PasswordTextFieldComponent
 import com.takasima.posapp.ui.components.WidthButton
+import com.takasima.posapp.ui.theme.Primary
 import com.takasima.posapp.ui.theme.Typography
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 @Composable
 fun LoginScreen(navController: NavHostController) {
 //    val navController = rememberNavController()
 
     Text(text = "Login Screen")
-    val email = remember {
+    var email = remember {
         mutableStateOf("")
     }
-    val password = remember {
+    var password = remember {
         mutableStateOf("")
     }
 
@@ -77,11 +85,11 @@ fun LoginScreen(navController: NavHostController) {
             PasswordTextFieldComponent(labelValue = "Masukkan password anda...", Icons.Default.Lock, password)
 
             Spacer(modifier = Modifier.height(48.dp))
-            WidthButton(value = "LOGIN", onClick = {
+            /*WidthButton(value = "LOGIN", onClick = {
                 navController.navigate("posapp")
-            })
+            })*/
 
-//            LoginButtonComponent(email, password, navController)
+            LoginButtonComponent(email, password, navController)
 //            Spacer(modifier = Modifier.height(20.dp))
 //
 //            RegisterButtonComponent(navController)
@@ -92,8 +100,10 @@ fun LoginScreen(navController: NavHostController) {
 
 @Composable
 fun LoginButtonComponent(email: MutableState<String>, password: MutableState<String>, navController: NavController) {
-    Button(onClick = {
-//        login(email.value, password.value, navController)
+    Button(colors = ButtonDefaults.buttonColors(containerColor = Primary),
+        modifier = Modifier.fillMaxWidth()
+        ,onClick = {
+        login(email.value, password.value, navController)
         password.value = ""
         email.value = ""
     }) {
@@ -101,18 +111,41 @@ fun LoginButtonComponent(email: MutableState<String>, password: MutableState<Str
     }
 }
 
-/*@Composable
-fun RegisterButtonComponent(navController: NavController) {
-    Button(colors = ButtonDefaults.buttonColors(Color.White), border = BorderStroke(1.dp, Color.Gray),
-        onClick = {
-        navController.navigate("posapp") {
-            popUpTo(navController.graph.startDestinationId)
-            launchSingleTop = true
+fun login(email: String, password: String, navController: NavController) {
+    val request = SignInRequest()
+    request.email = email.trim()
+    request.password = password.trim()
+
+    val retro = Retro().getRetroClientInstance().create(UserApi::class.java)
+    retro.login(request).enqueue(object : Callback<SignInResponse> {
+        override fun onResponse(call: Call<SignInResponse>, response: Response<SignInResponse>) {
+            if (response.isSuccessful){
+                val user = response.body()
+                if (user != null && user.success==true) {
+                    navController.navigate(route = "posapp")
+
+                    Log.e("status", "Login Successfully")
+                    Log.e("token", user.data?.token ?: "Token not available")
+                    Log.e("email", user.data?.user?.email ?: "Email not available")
+
+                } else {
+                    Log.e("error", "User response body is null, maybe email and password are wrong")
+                }
+            } else {
+                // Handle error response
+                val errorBody = response.errorBody()?.string()
+                Log.e("error", "Error response: $errorBody")
+                // Handle the error UI or show a toast message
+                // You can also extract the error message from the errorBody and display it to the user
+            }
         }
-    }) {
-        Text(text = "REGISTER", color = Color.Black)
-    }
-}*/
+
+        override fun onFailure(call: Call<SignInResponse>, t: Throwable) {
+            Log.e("error", t.message!! ?: "Unknown error occurred")
+        }
+
+    })
+}
 
 @Preview
 @Composable
