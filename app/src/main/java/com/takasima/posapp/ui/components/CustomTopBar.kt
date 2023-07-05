@@ -15,8 +15,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Search
@@ -48,6 +50,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.takasima.posapp.BottomMenu
 import com.takasima.posapp.R
 import com.takasima.posapp.ui.theme.Primary
 import kotlinx.coroutines.CoroutineScope
@@ -57,7 +62,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun CustomTopBar(title:String="Title",
     snackbarHostState: SnackbarHostState, coroutineScope: CoroutineScope,
-    drawerState: DrawerState, openDialog: MutableState<Boolean>
+    drawerState: DrawerState, openDialog: MutableState<Boolean>, navController: NavHostController
 ) {
     Box(
         modifier = Modifier
@@ -94,14 +99,6 @@ fun CustomTopBar(title:String="Title",
                     modifier = Modifier.weight(2f)
                 )
 
-                IconButton(onClick = { /*TODO*/ }) {
-
-                    Icon(
-                        imageVector = Icons.Outlined.Notifications,
-                        contentDescription = "Message icon",
-//                        modifier = Modifier.padding(horizontal = 8.dp)
-                    )
-                }
                 /*IconButton(onClick = { *//*TODO*//* }) {
 
                     Icon(
@@ -110,6 +107,34 @@ fun CustomTopBar(title:String="Title",
 //                        modifier = Modifier.padding(horizontal = 8.dp)
                     )
                 }*/
+                IconButton(onClick = { /*TODO*/ }) {
+
+                    Icon(
+                        imageVector = Icons.Outlined.Notifications,
+                        contentDescription = "Message icon",
+//                        modifier = Modifier.padding(horizontal = 8.dp)
+                    )
+                }
+                /*IconButton(
+                    onClick = {
+                        navController.navigate("profile_screen")
+                }) {
+
+                    Icon(
+                        imageVector = Icons.Outlined.Notifications,
+                        contentDescription = "Message icon",
+//                        modifier = Modifier.padding(horizontal = 8.dp)
+                    )
+
+                    Icon(painter = painterResource(id = R.drawable.profile), contentDescription = "",
+                        modifier = Modifier
+                            .size(35.dp)
+                            .clip(CircleShape)
+//                            .background(Color.White),
+                        )
+                }*/
+
+
                 Image(painter = painterResource(id = R.drawable.profile), contentDescription = "",
                     modifier = Modifier
                         .size(35.dp)
@@ -117,7 +142,9 @@ fun CustomTopBar(title:String="Title",
                         .background(Color.White)
                         .clickable {
                             openDialog.value = true
+                            navController.navigate("profile_screen")
                         }
+
 
                 )
             }
@@ -125,10 +152,56 @@ fun CustomTopBar(title:String="Title",
     }
 }
 
+@Composable
+fun BackTopBar(title: String, navController: NavHostController) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+            .height(48.dp)
+            .background(Color.White)
+    ) {
+        Card(
+            modifier = Modifier.requiredHeight(50.dp),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color.Transparent,
+                contentColor = Primary
+            )
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxSize()
+//                    .padding(8.dp)
+            ) {
+                IconButton(onClick = {
+                    navController.navigate(BottomMenu.Orders.route)
+                }) {
+
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = "Back",
+//                        modifier = Modifier.padding(horizontal = 8.dp)
+                    )
+                }
+
+                Text(text = title/*"Beranda"*/, fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier.weight(2f)
+                )
+            }
+        }
+
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun CustomTopBarPrev() {
-    CustomTopBar(snackbarHostState =remember { SnackbarHostState() }, coroutineScope = rememberCoroutineScope(),
-        drawerState = rememberDrawerState(initialValue = DrawerValue.Closed), openDialog = remember { mutableStateOf(false) })
+//    CustomTopBar(snackbarHostState =remember { SnackbarHostState() }, coroutineScope = rememberCoroutineScope(),
+//        drawerState = rememberDrawerState(initialValue = DrawerValue.Closed), openDialog = remember { mutableStateOf(false) }, navController = rememberNavController())
+    BackTopBar(title = "TITLE", navController = rememberNavController())
 }

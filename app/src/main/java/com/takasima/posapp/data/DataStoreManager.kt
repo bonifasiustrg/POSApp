@@ -69,4 +69,10 @@ class DataStoreManager(val context: Context) {
     val getAuthToken: Flow<String?> = context.datastore.data.map { preferences ->
         preferences[USER_TOKEN] ?: ""
     }
+
+    suspend fun clearUserToken() {
+        context.datastore.edit { preferences ->
+            preferences.remove(USER_TOKEN)
+        }
+    }
 }

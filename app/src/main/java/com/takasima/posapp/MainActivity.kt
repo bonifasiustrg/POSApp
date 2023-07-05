@@ -54,13 +54,13 @@ fun AppNavigation(navController: NavHostController, storedToken: String?) {
     if (!storedToken.isNullOrEmpty()) {
         startDestination = "posapp"
     } else {
-        startDestination = "welcom_screen"
+        startDestination = "welcome_screen"
     }
     NavHost(navController = navController, startDestination = startDestination, builder = {
         composable("welcome_screen", content = { WelcomeScreen(navController = navController) })
         composable("login_screen", content = { LoginScreen(navController = navController) })
 //        composable("register_screen", content = { RegisterScreen(navController = navController) })
-        composable("posapp", content = { POSApp() })
+        composable("posapp", content = { POSApp(navController) })
     })
 }
 

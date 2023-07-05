@@ -14,17 +14,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.takasima.posapp.BottomMenu
+import com.takasima.posapp.ui.components.BackTopBar
 import com.takasima.posapp.ui.components.BottomMenuScreen
 import com.takasima.posapp.ui.components.CustomTopBar
+import com.takasima.posapp.ui.screen.ProfileScreen
+import com.takasima.posapp.ui.screen.WelcomeScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun POSApp() {
+fun POSApp(mainNavController: NavHostController) {
+
     val navController = rememberNavController()
 //    Text(text = "Dashboard Owner Screen")
     val snackBarHostState = remember { SnackbarHostState() }
@@ -36,37 +41,43 @@ fun POSApp() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    val appBarTitle = when (currentRoute) {
+    val mainAppBarTitle = when (currentRoute) {
         BottomMenu.Orders.route -> BottomMenu.Orders.title
         BottomMenu.Products.route -> BottomMenu.Products.title
         BottomMenu.Histories.route -> BottomMenu.Histories.title
         BottomMenu.Shops.route -> BottomMenu.Shops.title
+
+        else -> "Aplikasi"
+    }
+    val altAppBarTitle = when (currentRoute) {
+        "profile_screen" -> "Profile"
         else -> "Aplikasi"
     }
 
     Scaffold(
-        topBar = { CustomTopBar(
-            title = appBarTitle,
-            snackbarHostState = snackBarHostState,
-            coroutineScope = coroutineScope,
-            drawerState = drawerState,
-            openDialog = openDialog
-        )},
-        bottomBar = {
+        topBar = {
+            if (currentRoute != "profile_screen") {
 //            CustomBottomNavigation(menuItems, navController)
-            BottomMenuScreen(navController)
+                CustomTopBar(
+                    title = mainAppBarTitle,
+                    snackbarHostState = snackBarHostState,
+                    coroutineScope = coroutineScope,
+                    drawerState = drawerState,
+                    openDialog = openDialog,
+                    navController
+                )
+            } else {
+                BackTopBar(title = altAppBarTitle, navController = navController)
+            }
+            },
+        bottomBar = {
+            if (currentRoute != "profile_screen") {
+//            CustomBottomNavigation(menuItems, navController)
+                    BottomMenuScreen(navController)
+            }
         }
     ){paddingValues ->
         NavHost(navController, startDestination = BottomMenu.Orders.route, Modifier.padding(paddingValues)) {
-            /*composable("welcome_screen"){
-                WelcomeScreen(navController = navController)
-            }
-            composable("login_screen"){
-                LoginScreen(navController = navController)
-            }
-            composable("posapp"){
-                POSApp(navController = navController)
-            }*/
             composable(BottomMenu.Orders.route){
                 OrderScreen(navController = navController)
             }
@@ -80,6 +91,9 @@ fun POSApp() {
 
             composable(BottomMenu.Shops.route){
                 ShopBranchScreen(navController = navController)
+            }
+            composable("profile_screen"){
+                ProfileScreen(mainNavController)
             }
         }
     }
