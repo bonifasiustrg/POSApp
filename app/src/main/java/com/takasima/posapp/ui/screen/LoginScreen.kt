@@ -1,5 +1,7 @@
 package com.takasima.posapp.ui.screen
 
+import DataStoreManager
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -25,6 +27,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,6 +47,11 @@ import com.takasima.posapp.ui.components.PasswordTextFieldComponent
 import com.takasima.posapp.ui.components.WidthButton
 import com.takasima.posapp.ui.theme.Primary
 import com.takasima.posapp.ui.theme.Typography
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -51,6 +59,7 @@ import retrofit2.Response
 @Composable
 fun LoginScreen(navController: NavHostController) {
 //    val navController = rememberNavController()
+    val context = LocalContext.current
 
     Text(text = "Login Screen")
     var email = remember {
@@ -89,7 +98,7 @@ fun LoginScreen(navController: NavHostController) {
                 navController.navigate("posapp")
             })*/
 
-            LoginButtonComponent(email, password, navController)
+            LoginButtonComponent(email, password, navController, context)
 //            Spacer(modifier = Modifier.height(20.dp))
 //
 //            RegisterButtonComponent(navController)
@@ -99,11 +108,13 @@ fun LoginScreen(navController: NavHostController) {
 
 
 @Composable
-fun LoginButtonComponent(email: MutableState<String>, password: MutableState<String>, navController: NavController) {
+fun LoginButtonComponent(email: MutableState<String>, password: MutableState<String>, navController: NavController, context: Context) {
+    val dataStoreManager = remember { DataStoreManager.getInstance(context) }
+
     Button(colors = ButtonDefaults.buttonColors(containerColor = Primary),
         modifier = Modifier.fillMaxWidth()
         ,onClick = {
-        login(email.value, password.value, navController)
+        login(email.value, password.value, navController, dataStoreManager = dataStoreManager)
         password.value = ""
         email.value = ""
     }) {
@@ -111,25 +122,40 @@ fun LoginButtonComponent(email: MutableState<String>, password: MutableState<Str
     }
 }
 
-fun login(email: String, password: String, navController: NavController) {
+@OptIn(DelicateCoroutinesApi::class)
+fun login(email: String, password: String, navController: NavController, dataStoreManager: DataStoreManager) {
     val request = SignInRequest()
     request.email = email.trim()
     request.password = password.trim()
 
     val retro = Retro().getRetroClientInstance().create(UserApi::class.java)
+    val storedToken = runBlocking { dataStoreManager.getAuthToken.first() }
+
     retro.login(request).enqueue(object : Callback<SignInResponse> {
-        override fun onResponse(call: Call<SignInResponse>, response: Response<SignInResponse>) {
-            if (response.isSuccessful){
+        override fun onResponse(
+            call: Call<SignInResponse>,
+            response: Response<SignInResponse>
+        ) {
+            if (response.isSuccessful) {
                 val user = response.body()
-                if (user != null && user.success==true) {
-                    navController.navigate(route = "posapp")
+                if (user != null && user.success == true) {
 
                     Log.e("status", "Login Successfully")
+
                     Log.e("token", user.data?.token ?: "Token not available")
+                    val token = user.data?.token ?: ""
+                    GlobalScope.launch {
+                        dataStoreManager.setUserToken(token)
+                    }
+
                     Log.e("email", user.data?.user?.email ?: "Email not available")
 
+                    navController.navigate(route = "posapp")
                 } else {
-                    Log.e("error", "User response body is null, maybe email and password are wrong")
+                    Log.e(
+                        "error",
+                        "User response body is null, maybe email and password are wrong"
+                    )
                 }
             } else {
                 // Handle error response
@@ -145,6 +171,7 @@ fun login(email: String, password: String, navController: NavController) {
         }
 
     })
+
 }
 
 @Preview
