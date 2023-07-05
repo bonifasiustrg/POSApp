@@ -79,7 +79,7 @@ fun ProductImageCard(/*
 
 
 @Composable
-fun OrderImageCard(/*
+fun OrderImageCard(imgRes:Int/*
     painter: Painter,
     contentDscription: String,
     title: String,
@@ -92,7 +92,7 @@ fun OrderImageCard(/*
     ) {
         Box(modifier = Modifier.size(200.dp)) {
             Image(
-                painter = painterResource(id = R.drawable.food),
+                painter = painterResource(id = imgRes),
                 contentDescription = "",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
@@ -130,5 +130,5 @@ fun ProductPrev() {
 @Preview
 @Composable
 fun ProductOrderPrev() {
-    OrderImageCard()
+    OrderImageCard(R.drawable.drink)
 }
