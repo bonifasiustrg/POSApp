@@ -11,40 +11,28 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material.icons.outlined.ShoppingCart
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DrawerState
-import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -52,11 +40,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.takasima.posapp.BottomMenu
 import com.takasima.posapp.R
 import com.takasima.posapp.ui.theme.Primary
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
 @Composable
@@ -85,28 +71,12 @@ fun CustomTopBar(title:String="Title",
                     .fillMaxSize()
 //                    .padding(8.dp)
             ) {
-                /*IconButton(onClick = {
-                    coroutineScope.launch {
-//                        snackbarHostState.showSnackbar("Snackbar")
-                        drawerState.open()
-                    }
-                }) {
-                    Icon(imageVector = Icons.Default.Menu, contentDescription = "Menu Draw")
-                }*/
                 Text(text = title/*"Beranda"*/, fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Start,
                     modifier = Modifier.weight(2f)
                 )
 
-                /*IconButton(onClick = { *//*TODO*//* }) {
-
-                    Icon(
-                        imageVector = Icons.Outlined.Search,
-                        contentDescription = "Notifications icon",
-//                        modifier = Modifier.padding(horizontal = 8.dp)
-                    )
-                }*/
                 IconButton(onClick = { /*TODO*/ }) {
 
                     Icon(
@@ -115,26 +85,75 @@ fun CustomTopBar(title:String="Title",
 //                        modifier = Modifier.padding(horizontal = 8.dp)
                     )
                 }
-                /*IconButton(
-                    onClick = {
-                        navController.navigate("profile_screen")
+                Image(painter = painterResource(id = R.drawable.profile), contentDescription = "",
+                    modifier = Modifier
+                        .size(35.dp)
+                        .clip(CircleShape)
+                        .background(Color.White)
+                        .clickable {
+                            openDialog.value = true
+                            navController.navigate("profile_screen")
+                        }
+
+
+                )
+            }
+        }
+    }
+}
+
+@ExperimentalMaterial3Api
+@Composable
+fun CustomProductTopBar(title:String="Title",
+    /*snackbarHostState: SnackbarHostState, coroutineScope: CoroutineScope,
+    drawerState: DrawerState,*/ openDialog: MutableState<Boolean>, navController: NavHostController
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+            .height(48.dp)
+            .background(Color.White)
+    ) {
+        Card(
+            modifier = Modifier.requiredHeight(50.dp),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color.Transparent,
+                contentColor = Primary
+            )
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxSize()
+//                    .padding(8.dp)
+            ) {
+                Text(text = title/*"Beranda"*/, fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier.weight(2f)
+                )
+
+                IconButton(onClick = {
+                    navController.navigate("product_setting_screen")
+
                 }) {
+
+                    Icon(
+                        imageVector = Icons.Outlined.Menu,
+                        contentDescription = "Message icon",
+//                        modifier = Modifier.padding(horizontal = 8.dp)
+                    )
+                }
+                IconButton(onClick = { /*TODO*/ }) {
 
                     Icon(
                         imageVector = Icons.Outlined.Notifications,
                         contentDescription = "Message icon",
 //                        modifier = Modifier.padding(horizontal = 8.dp)
                     )
-
-                    Icon(painter = painterResource(id = R.drawable.profile), contentDescription = "",
-                        modifier = Modifier
-                            .size(35.dp)
-                            .clip(CircleShape)
-//                            .background(Color.White),
-                        )
-                }*/
-
-
+                }
                 Image(painter = painterResource(id = R.drawable.profile), contentDescription = "",
                     modifier = Modifier
                         .size(35.dp)

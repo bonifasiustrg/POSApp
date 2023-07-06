@@ -1,8 +1,6 @@
-package com.takasima.posapp
+package com.takasima.posapp.ui.components
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.ui.graphics.vector.ImageVector
+import com.takasima.posapp.R
 
 sealed class BottomMenu(
     val route: String,

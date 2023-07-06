@@ -3,7 +3,6 @@ package com.takasima.posapp.ui.screen
 import DataStoreManager
 import android.content.Context
 import android.util.Log
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -34,9 +33,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.example.loginflow.data.SignInRequest
-import com.example.loginflow.data.SignInResponse
+import com.takasima.posapp.data.login.SignInRequest
+import com.takasima.posapp.data.login.SignInResponse
 import com.takasima.posapp.R
 import com.takasima.posapp.Retro
 import com.takasima.posapp.UserApi
@@ -44,7 +42,6 @@ import com.takasima.posapp.ui.components.HeadingTextComponent3
 import com.takasima.posapp.ui.components.MyTextFieldComponent
 import com.takasima.posapp.ui.components.NormalTextComponent
 import com.takasima.posapp.ui.components.PasswordTextFieldComponent
-import com.takasima.posapp.ui.components.WidthButton
 import com.takasima.posapp.ui.theme.Primary
 import com.takasima.posapp.ui.theme.Typography
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -94,14 +91,8 @@ fun LoginScreen(navController: NavHostController) {
             PasswordTextFieldComponent(labelValue = "Masukkan password anda...", Icons.Default.Lock, password)
 
             Spacer(modifier = Modifier.height(48.dp))
-            /*WidthButton(value = "LOGIN", onClick = {
-                navController.navigate("posapp")
-            })*/
 
             LoginButtonComponent(email, password, navController, context)
-//            Spacer(modifier = Modifier.height(20.dp))
-//
-//            RegisterButtonComponent(navController)
         }
     }
 }
@@ -129,7 +120,7 @@ fun login(email: String, password: String, navController: NavController, dataSto
     request.password = password.trim()
 
     val retro = Retro().getRetroClientInstance().create(UserApi::class.java)
-    val storedToken = runBlocking { dataStoreManager.getAuthToken.first() }
+//    val storedToken = runBlocking { dataStoreManager.getAuthToken.first() }
 
     retro.login(request).enqueue(object : Callback<SignInResponse> {
         override fun onResponse(

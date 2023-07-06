@@ -1,4 +1,4 @@
-package com.example.loginflow.data
+package com.takasima.posapp.data.login
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

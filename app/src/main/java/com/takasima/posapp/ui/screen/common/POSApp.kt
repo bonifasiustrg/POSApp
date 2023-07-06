@@ -1,4 +1,4 @@
-package com.takasima.posapp.ui.screen.owner
+package com.takasima.posapp.ui.screen.common
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -19,12 +19,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.takasima.posapp.BottomMenu
+import com.takasima.posapp.ui.components.BottomMenu
 import com.takasima.posapp.ui.components.BackTopBar
 import com.takasima.posapp.ui.components.BottomMenuScreen
+import com.takasima.posapp.ui.components.CustomProductTopBar
 import com.takasima.posapp.ui.components.CustomTopBar
-import com.takasima.posapp.ui.screen.ProfileScreen
-import com.takasima.posapp.ui.screen.WelcomeScreen
+import com.takasima.posapp.ui.screen.common.product.AddMenuScreen
+import com.takasima.posapp.ui.screen.common.product.MenuDetailScreen
+import com.takasima.posapp.ui.screen.common.product.ProductScreen
+import com.takasima.posapp.ui.screen.common.product.ProductOption
+import com.takasima.posapp.ui.screen.owner.ShopBranchScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,7 +60,12 @@ fun POSApp(mainNavController: NavHostController) {
 
     Scaffold(
         topBar = {
-            if (currentRoute != "profile_screen") {
+            if (currentRoute == BottomMenu.Products.route) {
+                CustomProductTopBar(
+                    openDialog = openDialog,
+                    navController = navController
+                )
+            } else if (currentRoute != "profile_screen") {
 //            CustomBottomNavigation(menuItems, navController)
                 CustomTopBar(
                     title = mainAppBarTitle,
@@ -95,6 +104,16 @@ fun POSApp(mainNavController: NavHostController) {
             composable("profile_screen"){
                 ProfileScreen(mainNavController)
             }
+            composable("product_setting_screen") {
+                ProductOption(navController)
+            }
+            composable("product_add_screen") {
+                AddMenuScreen(navController)
+            }
+            composable("product_detail_screen") {
+                MenuDetailScreen(navController)
+            }
+
         }
     }
 

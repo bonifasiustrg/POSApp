@@ -43,7 +43,7 @@ import com.takasima.posapp.R
 import com.takasima.posapp.ui.theme.Primary
 
 @Composable
-fun ProductImageCard(/*
+fun ProductImageCard(imgRes:Int/*
     painter: Painter,
     contentDscription: String,
     title: String,
@@ -56,7 +56,7 @@ fun ProductImageCard(/*
     ) {
         Box(modifier = Modifier.size(200.dp)) {
             Image(
-                painter = painterResource(id = R.drawable.food),
+                painter = painterResource(id = imgRes),
                 contentDescription = "",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
@@ -125,7 +125,7 @@ fun OrderImageCard(imgRes:Int/*
 @Preview
 @Composable
 fun ProductPrev() {
-    ProductImageCard()
+    ProductImageCard(R.drawable.food)
 }
 @Preview
 @Composable

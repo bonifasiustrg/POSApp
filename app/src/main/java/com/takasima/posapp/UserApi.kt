@@ -1,13 +1,14 @@
 package com.takasima.posapp
 
 
-import com.example.loginflow.data.SignInRequest
-import com.example.loginflow.data.SignInResponse
+import com.takasima.posapp.data.addmenu.CreateProductRequest
+import com.takasima.posapp.data.addmenu.CreateProductResponse
+import com.takasima.posapp.data.login.SignInRequest
+import com.takasima.posapp.data.login.SignInResponse
 import retrofit2.Call
-import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface UserApi {
@@ -16,4 +17,14 @@ interface UserApi {
         @Body userRequest: SignInRequest
     ): Call<SignInResponse>
 
+    @POST("menu/create")
+    fun createProduct(
+        @Body createProductRequest: CreateProductRequest,
+        @Header("Authorization") token: String // Menambahkan header Authorization
+    ): Call<CreateProductResponse>
+
+    @GET("menu/list")
+    fun getProducts(
+        @Header("Authorization") token: String
+    ): Call<List<CreateProductResponse.Data>>
 }

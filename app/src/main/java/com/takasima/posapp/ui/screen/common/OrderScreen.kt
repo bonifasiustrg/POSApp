@@ -1,58 +1,33 @@
-package com.takasima.posapp.ui.components
-
+package com.takasima.posapp.ui.screen.common
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.takasima.posapp.ui.screen.common.DrinkScreen
-import com.takasima.posapp.ui.screen.common.FoodScreen
-import com.takasima.posapp.ui.screen.common.ProductDrinkScreen
-import com.takasima.posapp.ui.screen.common.ProductFoodScreen
+import com.takasima.posapp.ui.components.tabs
 import kotlinx.coroutines.launch
 
-data class TabItem (
-    val title: String,
-    val screen: @Composable () -> Unit
-)
-val tabs = listOf(
-    TabItem(
-        title = "Makanan",
-        screen = { FoodScreen(navController = rememberNavController()) }
-    ),
-    TabItem(
-        title = "Minuman",
-        screen = { DrinkScreen(navController = rememberNavController()) }
-    )
-)
-
-
-
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun TabLayoutScreen() {
+fun OrderScreen(navController: NavController) {
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
+    val orderNavController = rememberNavController()
 
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = { Text(text = "Jetpack Compose TabLayout")},
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors (
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary
-                )
-            )
-        }
-    ) { paddingValues ->
-        Column (
+    Scaffold() { paddingValues ->
+        Column(
             modifier = Modifier.padding(paddingValues)
         ) {
             TabRow(
@@ -74,11 +49,10 @@ fun TabLayoutScreen() {
             }
         }
     }
-
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
-fun prev2() {
-    TabLayoutScreen()
+fun prev3() {
+    OrderScreen(navController = rememberNavController())
 }
