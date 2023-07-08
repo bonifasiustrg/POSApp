@@ -40,18 +40,9 @@ interface UserApi {
         @Header("Authorization") token: String // Menambahkan header Authorization
     ): Call<CreateBranchResponse>
 
-//    @GET("branch/list")
-//    suspend fun getBranchList(): Response<GetBranchListResponse>
     @GET("branch/list")
-    fun getBranchList(): Call<GetBranchListResponse>
-/*
-
-    @GET("menu/list")
-    fun getProducts(
+    suspend fun getBranchList(
         @Header("Authorization") token: String
-    ): Call<List<CreateProductResponse.Data>>
-*/
+    ): Response<GetBranchListResponse>
 
-    @GET("menu/list")
-    suspend fun getMenuList(): Response<GetMenuListResponse>
 }

@@ -1,9 +1,9 @@
 package com.takasima.posapp.ui.screen.owner.branch
 
 data class GetBranchListResponse(
-    val success: Boolean?=null,
-    val message: String?=null,
-    val data: List<Branch>? = null
+    val success: Boolean,
+    val message: String,
+    val data: List<Branch>
 )
 
 data class Branch(

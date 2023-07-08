@@ -14,8 +14,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.takasima.posapp.ui.screen.common.DrinkScreen
 import com.takasima.posapp.ui.screen.common.FoodScreen
-import com.takasima.posapp.ui.screen.common.ProductDrinkScreen
-import com.takasima.posapp.ui.screen.common.ProductFoodScreen
 import kotlinx.coroutines.launch
 
 data class TabItem (

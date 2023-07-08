@@ -37,15 +37,9 @@ import com.takasima.posapp.data.addmenu.CreateProductResponse
 import com.takasima.posapp.ui.components.BottomMenu
 import com.takasima.posapp.ui.components.HeadingTextComponent3
 import com.takasima.posapp.ui.components.MyTextFieldComponent
-import com.takasima.posapp.ui.screen.common.getMenuList
 import com.takasima.posapp.ui.theme.Primary
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
-import com.takasima.posapp.utils.Result
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -226,110 +220,6 @@ fun addMenu(
         }
     })
 }
-/*
-fun addMenu(
-    branch_id: MutableState<String>,
-    menu_type: MutableState<String>,
-    menu_name: MutableState<String>,
-    menu_price: MutableState<String>,
-    menu_description: MutableState<String>,
-    menu_qty: MutableState<String>,
-    navController: NavHostController,
-    dataStoreManager: DataStoreManager,
-    menuListState: MutableState<List<Menu>>,
-    errorMessageState: MutableState<String>
-) {
-    val request = CreateProductRequest()
-    val token = runBlocking { dataStoreManager.getAuthToken.first() }
-
-    request.branchId = "123"
-    request.menuType = "Food"
-    request.menuName = "Nasi Goreng"
-    request.menuPrice = "10.99"
-    request.menuDescription = "Nasi goreng spesial"
-    request.menuQty = "5"
-
-    val retro = Retro.getRetroClientInstance().create(UserApi::class.java)
-    val header = "Bearer $token"
-    Log.e("menu", "addMenu")
-    CoroutineScope(Dispatchers.IO).launch {
-        // Call the addMenu API
-        val response = retro.createProduct(request, header).execute()
-
-        Log.e("menu", "coroutinescope")
-        if (response.isSuccessful) {
-            val productResponse = response.body()
-            if (productResponse != null && productResponse.success == true) {
-                Log.e("status", productResponse.message.toString())
-
-                val data = productResponse.data
-                // Akses properti data sesuai kebutuhan Anda
-                val branchId = data?.branch_id
-                val userId = data?.user_id
-                val menuName = data?.menu_name
-                val menuQty = data?.menu_qty
-                val menuType = data?.menu_type
-                val menuPrice = data?.menu_price
-                val menuDescription = data?.menu_description
-                val menuImage = data?.menu_image
-                val menuStatus = data?.menu_status
-                Log.e("menu", productResponse.data?.toString() ?: "Menu not available")
-                Log.e("menu", branchId ?: "Menu not available")
-                Log.e("menu", userId ?: "Menu not available")
-                Log.e("menu", menuName ?: "Menu not available")
-                Log.e("menu", menuQty ?: "Menu not available")
-                Log.e("menu", menuType ?: "Menu not available")
-                Log.e("menu", menuPrice ?: "Menu not available")
-                Log.e("menu", menuDescription ?: "Menu not available")
-                Log.e("menu", menuImage ?: "Menu not available")
-                Log.e("menu", menuStatus ?: "Menu not available")
-
-                // Menu added successfully
-                when (val menuList = getMenuList()) {
-                    is Result.Success -> {
-                        val updatedMenuList = menuList.data
-                        // Update the menu list in the UI
-                        withContext(Dispatchers.Main) {
-                            // Update the UI on the main thread
-                            menuListState.value = updatedMenuList
-                            Log.e("menu", updatedMenuList.toString())
-                            Log.e("menu", "updatedMenuList.toString()")
-                            navController.navigate(BottomMenu.Products.route)
-                        }
-
-                    }
-                    is Result.Error -> {
-                        Log.e("menu", "result error")
-
-                        // Handle the error while fetching the menu list
-                        withContext(Dispatchers.Main) {
-                            // Update the UI on the main thread with an error message
-                            errorMessageState.value = menuList.errorMessage
-                        }
-                    }
-                    else -> {
-                        Log.e("menu", "result other error")
-
-                        // Handle any other possible Result cases
-                        withContext(Dispatchers.Main) {
-                            // Update the UI on the main thread with an appropriate message
-                            errorMessageState.value = "Unknown error occurred"
-                        }
-                    }
-                }
-            } else {
-                // Handle the error in adding the menu
-                Log.e("menu", "error adding the menu")
-
-            }
-        } else {
-            // Handle the error response from the addMenu API
-            Log.e("menu", "error response from the addMenu API")
-
-        }
-    }
-}*/
-
 
 @Preview
 @Composable

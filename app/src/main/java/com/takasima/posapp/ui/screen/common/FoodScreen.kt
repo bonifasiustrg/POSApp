@@ -43,51 +43,8 @@ fun FoodScreen(navController: NavHostController) {
 
     )
 }
-@Composable
-fun ProductFoodScreen(navController: NavHostController) {
-    val viewModel: MenuViewModel = viewModel()
-    val menuListState by viewModel.menuListState
 
-    // Fetch menu data when the screen is displayed
-    LaunchedEffect(Unit) {
-        viewModel.fetchMenuData(branchId = 1)
-    }
-
-    Column {
-        Text(text = "Menu List")
-
-        // Display menu items
-        LazyColumn {
-            items(menuListState.size) { index ->
-                MenuItem(menuListState[index])
-                Spacer(modifier = Modifier.height(8.dp))
-            }
-        }
-    }
-    /*when {
-        menuListState.isEmpty() -> {
-            // Menampilkan indikator loading atau pesan lainnya saat data sedang diambil
-            Text(text = "Loading...")
-        }
-
-        else -> {
-            MenuList(menuList = menuListState)
-        }
-    }*/
-}
-@Composable
-fun MenuItem(menuItem: Menu) {
-    Column() {
-        Text(text = menuItem.branch_id)
-        Text(text = menuItem.menu_name)
-        Text(text = menuItem.menu_price)
-        Text(text = menuItem.menu_qty)
-        Text(text = menuItem.menu_type)
-        Text(text = menuItem.menu_status)
-        Text(text = menuItem.menu_id.toString())
-    }
-}
-suspend fun getMenuList(): Result<List<Menu>> {
+/*suspend fun getMenuList(): Result<List<Menu>> {
     return withContext(Dispatchers.IO) {
         try {
             val retrofit = Retro.getRetroClientInstance()
@@ -109,4 +66,4 @@ suspend fun getMenuList(): Result<List<Menu>> {
             Result.Error("Network request failed.")
         }
     }
-}
+}*/

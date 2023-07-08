@@ -25,7 +25,8 @@ import com.takasima.posapp.ui.components.BottomMenuScreen
 import com.takasima.posapp.ui.components.CustomProductTopBar
 import com.takasima.posapp.ui.components.CustomTopBar
 import com.takasima.posapp.ui.screen.common.product.AddMenuScreen
-import com.takasima.posapp.ui.screen.common.product.MenuDetailScreen
+import com.takasima.posapp.ui.screen.common.product.ProductDetailScreen
+import com.takasima.posapp.ui.screen.common.product.ProductFoodScreen
 import com.takasima.posapp.ui.screen.common.product.ProductScreen
 import com.takasima.posapp.ui.screen.common.product.ProductOption
 import com.takasima.posapp.ui.screen.owner.branch.AddBranchScreen
@@ -112,7 +113,7 @@ fun POSApp(mainNavController: NavHostController) {
                 AddMenuScreen(navController)
             }
             composable("product_detail_screen") {
-                MenuDetailScreen(navController)
+                ProductDetailScreen(navController)
             }
             composable("product_food_screen") {
                 ProductFoodScreen(navController)

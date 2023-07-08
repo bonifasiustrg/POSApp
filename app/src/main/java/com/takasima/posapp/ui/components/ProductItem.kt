@@ -39,7 +39,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.takasima.posapp.R
+import com.takasima.posapp.data.MenuViewModel
+import com.takasima.posapp.ui.screen.common.product.Menu
 import com.takasima.posapp.ui.theme.Primary
 
 @Composable
@@ -76,7 +79,39 @@ fun ProductImageCard(imgRes:Int/*
         }
     }
 }
+@Composable
+fun ProductImageCard2(imgRes:Int=R.drawable.food, menuItem: Menu, navController: NavHostController,  viewModel: MenuViewModel) {
+    Card(
+        modifier = Modifier.height(200.dp)
+            .clickable {
+                viewModel.selectedMenuState.value = menuItem
+                navController.navigate("product_detail_screen")
+            },
+        shape = RoundedCornerShape(15.dp),
+        elevation = CardDefaults.cardElevation(5.dp)
+    ) {
+        Box(modifier = Modifier.size(200.dp)) {
+            Image(
+                painter = painterResource(id = imgRes),
+                contentDescription = "",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
 
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .padding(12.dp),
+                contentAlignment = Alignment.BottomStart
+            ) {
+                Column() {
+                    Text(text = menuItem.menu_name, style = TextStyle(color = Color.White, fontSize = 16.sp))
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(text = "Rp${menuItem.menu_price}", style = TextStyle(color = Color.White, fontSize = 16.sp))
+                }
+            }
+        }
+    }
+}
 
 @Composable
 fun OrderImageCard(imgRes:Int/*
