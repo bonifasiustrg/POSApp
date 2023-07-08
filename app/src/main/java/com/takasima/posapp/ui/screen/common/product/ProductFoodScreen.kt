@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
 @Composable
-fun ProductFoodScreen(navController: NavHostController, branchId: Int=1) {
+ fun ProductFoodScreen(navController: NavHostController, branchId: Int=1) {
     val ctx = LocalContext.current
     val dataStoreManager = DataStoreManager.getInstance(ctx)
     val storedToken = runBlocking { dataStoreManager.getAuthToken.first() }

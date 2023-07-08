@@ -87,9 +87,9 @@ fun AddBranchScreen(navController: NavHostController) {
             MyTextFieldComponent(labelValue = "Masukkan harga menu...", Icons.Default.Edit, branch_email)
             Spacer(modifier = Modifier.height(8.dp))
 
-            HeadingTextComponent3(value = "Menu Description")
-            MyTextFieldComponent(labelValue = "Deskripsi menu...", Icons.Default.Edit, branch_status)
-            Spacer(modifier = Modifier.height(8.dp))
+//            HeadingTextComponent3(value = "Menu Description")
+//            MyTextFieldComponent(labelValue = "Deskripsi menu...", Icons.Default.Edit, branch_status)
+//            Spacer(modifier = Modifier.height(8.dp))
 
 
 //            Spacer(modifier = Modifier.height(48.dp))
@@ -139,11 +139,14 @@ fun addBranch(
     val request = CreateBranchRequest()
     val token = runBlocking { dataStoreManager.getAuthToken.first() }
 
-    request.branch_name = "BDI Resto Bandung"
-    request.branch_address = "depan SD"
-    request.branch_phone = "0808080880"
-    request.branch_email = "branch5@pos.com"
-//    request.branch_status = "Aktif"
+//    request.branch_name = "BDI Resto Bandung"
+//    request.branch_address = "depan SD"
+//    request.branch_phone = "0808080880"
+//    request.branch_email = "branch5@pos.com"
+    request.branch_name = branch_name.value
+    request.branch_address = branch_address.value
+    request.branch_phone = branch_phone.value
+    request.branch_email = branch_email.value
 
     val retro = Retro.getRetroClientInstance().create(UserApi::class.java)
     val header = "Bearer $token"

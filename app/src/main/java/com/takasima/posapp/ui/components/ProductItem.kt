@@ -122,6 +122,59 @@ fun ProductImageCard2(/*imgRes:Int=R.drawable.food,*/ menuItem: Menu, navControl
         }
     }
 }
+@Composable
+fun OrderImageCard2(/*imgRes:Int=R.drawable.food,*/ menuItem: Menu, navController: NavHostController,  viewModel: MenuViewModel) {
+    Card(
+        modifier = Modifier.height(200.dp)
+            .clickable {
+                viewModel.selectedMenuState.value = menuItem
+                navController.navigate("product_detail_screen")
+            },
+        shape = RoundedCornerShape(15.dp),
+        elevation = CardDefaults.cardElevation(5.dp)
+    ) {
+        var sizeImage by remember { mutableStateOf(IntSize.Zero) }
+        val gradient = Brush.verticalGradient(
+            colors = listOf(Color.Transparent, Color.Black),
+            startY = sizeImage.height.toFloat()/3,  // 1/3
+            endY = sizeImage.height.toFloat()
+        )
+        Box(modifier = Modifier.size(200.dp)) {
+            AsyncImage(
+                model = menuItem.menu_image,
+                contentDescription = menuItem.menu_name,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.onGloballyPositioned {
+                    sizeImage = it.size
+                }
+            )
+            Box(modifier = Modifier.matchParentSize().background(gradient))
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .padding(12.dp),
+                contentAlignment = Alignment.BottomStart
+            ) {
+
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Column() {
+                        Text(text = menuItem.menu_name, style = TextStyle(color = Color.White, fontSize = 16.sp))
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(text = "Rp${menuItem.menu_price}", style = TextStyle(color = Color.White, fontSize = 16.sp))
+
+
+                    }
+                    Button(onClick = { /*TODO*/ },
+                        shape = CircleShape,
+                        colors = ButtonDefaults.buttonColors(Primary)
+                    ) {
+//                        Text(text = "HALO")
+                        Icon(imageVector = Icons.Default.Add, contentDescription = "")
+                    }
+                }
+            }
+        }
+    }
+}
 
 @Composable
 fun OrderImageCard(imgRes:Int/*

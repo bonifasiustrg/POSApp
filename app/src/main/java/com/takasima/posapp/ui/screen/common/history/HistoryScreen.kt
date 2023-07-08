@@ -1,4 +1,4 @@
-package com.takasima.posapp.ui.screen.common
+package com.takasima.posapp.ui.screen.common.history
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

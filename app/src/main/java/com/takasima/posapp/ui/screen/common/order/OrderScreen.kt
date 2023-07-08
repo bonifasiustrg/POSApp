@@ -1,4 +1,4 @@
-package com.takasima.posapp.ui.screen.common
+package com.takasima.posapp.ui.screen.common.order
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
