@@ -1,8 +1,8 @@
-package com.takasima.posapp.data
+package com.takasima.posapp.repository
 
 import android.util.Log
-import com.takasima.posapp.Retro
-import com.takasima.posapp.UserApi
+import com.takasima.posapp.network.Retro
+import com.takasima.posapp.network.UserApi
 import com.takasima.posapp.ui.screen.owner.branch.Branch
 
 class BranchRepository {

@@ -24,6 +24,7 @@ import com.takasima.posapp.ui.components.BackTopBar
 import com.takasima.posapp.ui.components.BottomMenuScreen
 import com.takasima.posapp.ui.components.CustomProductTopBar
 import com.takasima.posapp.ui.components.CustomTopBar
+import com.takasima.posapp.ui.screen.common.main.ProfileScreen
 import com.takasima.posapp.ui.screen.common.product.AddMenuScreen
 import com.takasima.posapp.ui.screen.common.product.ProductDetailScreen
 import com.takasima.posapp.ui.screen.common.product.ProductFoodScreen

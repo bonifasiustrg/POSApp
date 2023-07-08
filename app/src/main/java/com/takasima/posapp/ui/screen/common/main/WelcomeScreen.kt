@@ -1,4 +1,4 @@
-package com.takasima.posapp.ui.screen
+package com.takasima.posapp.ui.screen.common.main
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

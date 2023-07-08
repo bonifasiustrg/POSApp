@@ -29,11 +29,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.takasima.posapp.Retro
-import com.takasima.posapp.UserApi
-import com.takasima.posapp.data.MenuViewModel
-import com.takasima.posapp.data.addmenu.CreateProductRequest
-import com.takasima.posapp.data.addmenu.CreateProductResponse
+import com.takasima.posapp.network.Retro
+import com.takasima.posapp.network.UserApi
+import com.takasima.posapp.models.MenuViewModel
+import com.takasima.posapp.data.product.CreateProductRequest
+import com.takasima.posapp.data.product.CreateProductResponse
 import com.takasima.posapp.ui.components.BottomMenu
 import com.takasima.posapp.ui.components.HeadingTextComponent3
 import com.takasima.posapp.ui.components.MyTextFieldComponent
@@ -98,7 +98,7 @@ fun AddMenuScreen(navController: NavHostController) {
             HeadingTextComponent3(value = "Menu Quantity")
             MyTextFieldComponent(labelValue = "Masukkan jumlah item ...", Icons.Default.Edit, menu_qty)
             Spacer(modifier = Modifier.height(8.dp))
-
+//            ImageUploadAndConvert(context)
 //            Spacer(modifier = Modifier.height(48.dp))
 
             AddMenuButton(branch_id, menu_type, menu_name, menu_price, menu_description, menu_qty, navController = navController, context)

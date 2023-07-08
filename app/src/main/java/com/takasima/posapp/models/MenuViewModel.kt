@@ -1,10 +1,10 @@
-package com.takasima.posapp.data
+package com.takasima.posapp.models
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.takasima.posapp.data.MenuRepository
+import com.takasima.posapp.repository.MenuRepository
 import com.takasima.posapp.ui.screen.common.product.Menu
 import kotlinx.coroutines.launch
 

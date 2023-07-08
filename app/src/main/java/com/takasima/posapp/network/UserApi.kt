@@ -1,8 +1,8 @@
-package com.takasima.posapp
+package com.takasima.posapp.network
 
 
-import com.takasima.posapp.data.addmenu.CreateProductRequest
-import com.takasima.posapp.data.addmenu.CreateProductResponse
+import com.takasima.posapp.data.product.CreateProductRequest
+import com.takasima.posapp.data.product.CreateProductResponse
 import com.takasima.posapp.data.branch.CreateBranchRequest
 import com.takasima.posapp.data.branch.CreateBranchResponse
 import com.takasima.posapp.data.login.SignInRequest

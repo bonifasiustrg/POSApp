@@ -1,15 +1,12 @@
-package com.takasima.posapp.ui.screen.owner.branch
+package com.takasima.posapp.models
 
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.takasima.posapp.Retro
-import com.takasima.posapp.UserApi
-import com.takasima.posapp.data.BranchRepository
-import com.takasima.posapp.data.MenuRepository
-import com.takasima.posapp.ui.screen.common.product.Menu
+import com.takasima.posapp.repository.BranchRepository
+import com.takasima.posapp.ui.screen.owner.branch.Branch
 import kotlinx.coroutines.launch
 
 class BranchViewModel: ViewModel() {

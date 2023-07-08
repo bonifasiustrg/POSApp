@@ -1,8 +1,7 @@
-package com.takasima.posapp
+package com.takasima.posapp.network
 
 
 import com.google.gson.GsonBuilder
-import com.takasima.posapp.ui.screen.common.product.GetMenuListResponse
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

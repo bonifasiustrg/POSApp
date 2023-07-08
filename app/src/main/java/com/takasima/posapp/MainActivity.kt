@@ -14,8 +14,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.takasima.posapp.ui.screen.LoginScreen
-import com.takasima.posapp.ui.screen.WelcomeScreen
+import com.takasima.posapp.ui.screen.common.main.LoginScreen
+import com.takasima.posapp.ui.screen.common.main.WelcomeScreen
 import com.takasima.posapp.ui.screen.common.POSApp
 import com.takasima.posapp.ui.theme.POSAppTheme
 import kotlinx.coroutines.flow.first

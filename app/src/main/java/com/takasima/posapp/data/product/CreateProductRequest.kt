@@ -1,4 +1,4 @@
-package com.takasima.posapp.data.addmenu
+package com.takasima.posapp.data.product
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

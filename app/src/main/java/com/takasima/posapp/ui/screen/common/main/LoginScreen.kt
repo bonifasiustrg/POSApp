@@ -1,4 +1,4 @@
-package com.takasima.posapp.ui.screen
+package com.takasima.posapp.ui.screen.common.main
 
 import DataStoreManager
 import android.content.Context
@@ -36,8 +36,8 @@ import androidx.navigation.NavHostController
 import com.takasima.posapp.data.login.SignInRequest
 import com.takasima.posapp.data.login.SignInResponse
 import com.takasima.posapp.R
-import com.takasima.posapp.Retro
-import com.takasima.posapp.UserApi
+import com.takasima.posapp.network.Retro
+import com.takasima.posapp.network.UserApi
 import com.takasima.posapp.ui.components.HeadingTextComponent3
 import com.takasima.posapp.ui.components.MyTextFieldComponent
 import com.takasima.posapp.ui.components.NormalTextComponent
@@ -46,9 +46,7 @@ import com.takasima.posapp.ui.theme.Primary
 import com.takasima.posapp.ui.theme.Typography
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

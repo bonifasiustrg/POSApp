@@ -1,4 +1,4 @@
-package com.takasima.posapp.ui.screen.common
+package com.takasima.posapp.ui.screen.common.main
 
 import DataStoreManager
 import androidx.compose.foundation.Image
