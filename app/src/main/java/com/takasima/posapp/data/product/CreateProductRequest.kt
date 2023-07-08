@@ -21,4 +21,7 @@ class CreateProductRequest {
 
     @SerializedName("menu_qty") @Expose
     var menuQty: String? = null
+
+    @SerializedName("menu_image") @Expose
+    var menuImage: String? = null
 }

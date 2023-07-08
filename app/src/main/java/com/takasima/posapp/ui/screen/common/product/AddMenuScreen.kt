@@ -19,8 +19,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -75,7 +77,7 @@ fun AddMenuScreen(navController: NavHostController) {
     ) {
         Column(verticalArrangement = Arrangement.Center) {
 
-            HeadingTextComponent3(value = "BranchId")
+            HeadingTextComponent3(value = "Branch Id")
             MyTextFieldComponent(labelValue = "Masukkan BranchId", Icons.Default.Edit, branch_id)
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -98,10 +100,12 @@ fun AddMenuScreen(navController: NavHostController) {
             HeadingTextComponent3(value = "Menu Quantity")
             MyTextFieldComponent(labelValue = "Masukkan jumlah item ...", Icons.Default.Edit, menu_qty)
             Spacer(modifier = Modifier.height(8.dp))
+            val base64Text = remember { mutableStateOf("") }
+            RequestContentPermission(base64Text)
 //            ImageUploadAndConvert(context)
 //            Spacer(modifier = Modifier.height(48.dp))
 
-            AddMenuButton(branch_id, menu_type, menu_name, menu_price, menu_description, menu_qty, navController = navController, context)
+            AddMenuButton(branch_id, menu_type, menu_name, menu_price, menu_description, menu_qty, base64Text, navController = navController, context)
         }
     }
 }
@@ -113,6 +117,7 @@ fun AddMenuButton(
     menu_price: MutableState<String>,
     menu_description: MutableState<String>,
     menu_qty: MutableState<String>,
+    menu_image: MutableState<String>? = null,
     navController: NavHostController,
     context: Context,
 ) {
@@ -122,7 +127,7 @@ fun AddMenuButton(
     Button(colors = ButtonDefaults.buttonColors(containerColor = Primary),
         modifier = Modifier.fillMaxWidth()
         ,onClick = {
-            addMenu(branch_id, menu_type, menu_name, menu_price, menu_description, menu_qty, navController, dataStoreManager/*, menuListState, errorMessageState*/)
+            addMenu(branch_id, menu_type, menu_name, menu_price, menu_description, menu_qty, menu_image, navController, dataStoreManager/*, menuListState, errorMessageState*/)
             branch_id.value = ""
             menu_type.value = ""
             menu_name.value = ""
@@ -140,6 +145,7 @@ fun addMenu(
     menu_price: MutableState<String>,
     menu_description: MutableState<String>,
     menu_qty: MutableState<String>,
+    menu_image: MutableState<String>?,
     navController: NavHostController,
     dataStoreManager: DataStoreManager
 ) {
@@ -149,12 +155,13 @@ fun addMenu(
     val request = CreateProductRequest()
     val token = runBlocking { dataStoreManager.getAuthToken.first() }
 
-    request.branchId = "1"
-    request.menuType = "unit_stock"
-    request.menuName = "Pizza"
-    request.menuPrice = "50000"
-    request.menuDescription = "Pizza spesial"
-    request.menuQty = "25"
+    request.branchId = branch_id.value
+    request.menuType = menu_type.value
+    request.menuName = menu_name.value
+    request.menuPrice = menu_price.value
+    request.menuDescription = menu_description.value
+    request.menuQty = menu_qty.value
+    request.menuImage = menu_image?.value
 
     val retro = Retro.getRetroClientInstance().create(UserApi::class.java)
     val header = "Bearer $token"
