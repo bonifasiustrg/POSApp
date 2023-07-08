@@ -37,11 +37,11 @@ fun ProductScreen(navController: NavHostController) {
     val tabsProduct = listOf(
         TabItem(
             title = "Makanan",
-            screen = { ProductFoodScreen(productNavController) }
+            screen = { ProductFoodScreen(navController) }
         ),
         TabItem(
             title = "Minuman",
-            screen = { ProductDrinkScreen(productNavController) }
+            screen = { ProductDrinkScreen(navController) }
         )
     )
 

@@ -119,7 +119,7 @@ fun login(email: String, password: String, navController: NavController, dataSto
     request.email = email.trim()
     request.password = password.trim()
 
-    val retro = Retro().getRetroClientInstance().create(UserApi::class.java)
+    val retro = Retro.getRetroClientInstance().create(UserApi::class.java)
 //    val storedToken = runBlocking { dataStoreManager.getAuthToken.first() }
 
     retro.login(request).enqueue(object : Callback<SignInResponse> {

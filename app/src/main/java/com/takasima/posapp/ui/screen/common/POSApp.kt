@@ -28,7 +28,8 @@ import com.takasima.posapp.ui.screen.common.product.AddMenuScreen
 import com.takasima.posapp.ui.screen.common.product.MenuDetailScreen
 import com.takasima.posapp.ui.screen.common.product.ProductScreen
 import com.takasima.posapp.ui.screen.common.product.ProductOption
-import com.takasima.posapp.ui.screen.owner.ShopBranchScreen
+import com.takasima.posapp.ui.screen.owner.branch.AddBranchScreen
+import com.takasima.posapp.ui.screen.owner.branch.ShopBranchScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -112,6 +113,15 @@ fun POSApp(mainNavController: NavHostController) {
             }
             composable("product_detail_screen") {
                 MenuDetailScreen(navController)
+            }
+            composable("product_food_screen") {
+                ProductFoodScreen(navController)
+            }
+            composable("product_drink_screen") {
+                ProductDrinkScreen(navController)
+            }
+            composable("branch_add_screen") {
+                AddBranchScreen(navController)
             }
 
         }

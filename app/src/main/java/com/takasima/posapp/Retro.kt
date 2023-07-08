@@ -2,16 +2,24 @@ package com.takasima.posapp
 
 
 import com.google.gson.GsonBuilder
+import com.takasima.posapp.ui.screen.common.product.GetMenuListResponse
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class Retro {
-    private val baseUrl = "https://pos-bdi-app.my.id/api/"
+object Retro {
+    private const val BASE_URL = "https://pos-bdi-app.my.id/api/"
+    private val gson = GsonBuilder().setLenient().create()
     fun getRetroClientInstance(): Retrofit {
-        val gson = GsonBuilder().setLenient().create()
         return Retrofit.Builder()
-            .baseUrl(baseUrl)
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
 }
+/*suspend fun fetchMenuData(): GetMenuListResponse {
+    val retrofit = Retro.getRetroClientInstance()
+    val apiService = retrofit.create(UserApi::class.java)
+    return apiService.getMenuList().body() ?: GetMenuListResponse(false, "", emptyList())
+}*/
+
+
