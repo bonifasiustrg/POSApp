@@ -77,9 +77,9 @@ fun AddMenuScreen(navController: NavHostController) {
     ) {
         Column(verticalArrangement = Arrangement.Center) {
 
-            HeadingTextComponent3(value = "Branch Id")
-            MyTextFieldComponent(labelValue = "Masukkan BranchId", Icons.Default.Edit, branch_id)
-            Spacer(modifier = Modifier.height(8.dp))
+//            HeadingTextComponent3(value = "Branch Id")
+//            MyTextFieldComponent(labelValue = "Masukkan BranchId", Icons.Default.Edit, branch_id)
+//            Spacer(modifier = Modifier.height(8.dp))
 
             HeadingTextComponent3(value = "Manu Type")
             MyTextFieldComponent(labelValue = "Masukkan Tipe menu...", Icons.Default.Edit, menu_type)
@@ -155,7 +155,7 @@ fun addMenu(
     val request = CreateProductRequest()
     val token = runBlocking { dataStoreManager.getAuthToken.first() }
 
-    request.branchId = branch_id.value
+//    request.branchId = branch_id.value
     request.menuType = menu_type.value
     request.menuName = menu_name.value
     request.menuPrice = menu_price.value

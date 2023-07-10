@@ -13,27 +13,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.takasima.posapp.ui.screen.common.DrinkScreen
-import com.takasima.posapp.ui.screen.common.FoodScreen
+import com.takasima.posapp.ui.screen.common.order.FoodScreen
 import kotlinx.coroutines.launch
 
 data class TabItem (
     val title: String,
     val screen: @Composable () -> Unit
 )
-val tabs = listOf(
-    TabItem(
-        title = "Makanan",
-        screen = { FoodScreen(navController = rememberNavController()) }
-    ),
-    TabItem(
-        title = "Minuman",
-        screen = { DrinkScreen(navController = rememberNavController()) }
-    )
-)
 
 
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+
+/*@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun TabLayoutScreen() {
     val pagerState = rememberPagerState()
@@ -73,10 +64,9 @@ fun TabLayoutScreen() {
         }
     }
 
-}
+}*/
 
 @Preview
 @Composable
 fun prev2() {
-    TabLayoutScreen()
 }

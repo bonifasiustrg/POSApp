@@ -2,6 +2,7 @@ package com.takasima.posapp.ui.screen.common.product
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -36,21 +37,21 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
 @Composable
-fun ProductDetailScreen(navController: NavHostController, menuIds: Int) {
+fun ProductDetailScreen(navController: NavHostController, menuId: String) {
     val context = LocalContext.current
     val dataStoreManager = remember { DataStoreManager.getInstance(context) }
     val storedToken = runBlocking { dataStoreManager.getAuthToken.first() }
 
     val menuViewModel: MenuViewModel = viewModel()
-    val tes:  List<Int> = listOf(0)
-    Log.e("tes", tes.toString())
+
+    Log.e("tes", menuId)
     val menuListState by menuViewModel.menuByIDList
 
     // Fetch menu data when the screen is displayed
     LaunchedEffect(Unit) {
-        storedToken?.let { menuViewModel.fetchMenuByIdList("[5,6]", it) }
+        storedToken?.let { menuViewModel.fetchMenuByIdList(menuId, it) }
     }
-    Log.e("Product Detail Screen", "menuListState: $menuListState")
+    Log.e("Product Detail Screen1", "menuListState: $menuListState")
 
     Column {
         when {
@@ -77,7 +78,7 @@ fun ProductDetailScreen(navController: NavHostController, menuIds: Int) {
 
 @Composable
 fun SelectedMenuCard(menuItem:MenuById) {
-    Column() {
+    Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.Center) {
         AsyncImage(
             model = menuItem.menu_image,
             contentDescription = menuItem.menu_name,
@@ -85,5 +86,7 @@ fun SelectedMenuCard(menuItem:MenuById) {
         )
         Text(text = menuItem.menu_name!!)
         Text(text = menuItem.menu_price!!)
+        Text(text = menuItem.menu_qty!!)
+        Text(text = menuItem.menu_description!!)
     }
 }

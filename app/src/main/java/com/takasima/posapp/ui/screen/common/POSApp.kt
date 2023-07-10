@@ -120,13 +120,13 @@ fun POSApp(mainNavController: NavHostController) {
                 AddMenuScreen(navController)
             }
 
-            composable("product_detail_screen/{menuIds}",
-                arguments = listOf(navArgument("menuIds") { type = NavType.IntType})
+            composable("product_detail_screen/{menuId}",
+                arguments = listOf(navArgument("menuId") { type = NavType.StringType })
             ) {backStackEntry ->
-                val menuIds = backStackEntry.arguments?.getInt("menuIds")
+                val menuId = backStackEntry.arguments?.getString("menuId")
 //                val menuIdsList = menuIdsArray?.toList()?.map { it.toInt() }?.toCollection(ArrayList())
-                Log.e("menuIds", "go to product detail")
-                ProductDetailScreen(navController, menuIds!!)
+                Log.e("POSApp product detail", "go to product detail $menuId")
+                ProductDetailScreen(navController, menuId!!)
             }
 
             composable("order_detail_screen/{menuIds}",
@@ -134,7 +134,7 @@ fun POSApp(mainNavController: NavHostController) {
             ) {backStackEntry ->
                 val menuIds = backStackEntry.arguments?.getString("menuIds")
 //                val menuIdsList = menuIdsArray?.toList()?.map { it.toInt() }?.toCollection(ArrayList())
-                Log.e("POSApp order detail", "go to order detail")
+                Log.e("POSApp order detail", "go to order detail $menuIds")
                 OrderDetailScreen(navController, menuIds!!)
             }
             /*composable("order_detail_screen") {

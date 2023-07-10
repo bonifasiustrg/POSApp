@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -28,11 +29,13 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -88,34 +91,31 @@ fun ProductImageCard(imgRes:Int/*
 }
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ProductImageCard2(/*imgRes:Int=R.drawable.food,*/ menuItem: Menu, navController: NavHostController, viewModel: MenuViewModel) {
-    var checkedState by remember { mutableStateOf(false) }
-    var showCheckbox by remember { mutableStateOf(false) }
-//    val tesIds = arrayListOf(1, 2)
-    val tesIds = "[5,6]"
-//    val menuIdsList: ArrayList<Int?> = tesIds.map { it }.toCollection(ArrayList())
-    val selectedMenu = remember { mutableStateListOf<Menu>() }
+fun ProductImageCard2(menuItem: Menu, navController: NavHostController,
+                      viewModel: MenuViewModel, selectedMenuId: MutableState<List<Int>>,
+//                      showCheckbox:  MutableState<Boolean>,
+//                      checkedState: MutableState<Boolean>
+                      checkedStateList: SnapshotStateList<Boolean>,
+                      position: Int
+) {
+//    var checkedState by remember { mutableStateOf(false) }
+////    var showCheckbox by remember { mutableStateOf(false) }
+////    val tesIds = arrayListOf(1, 2)
     Card(
         modifier = Modifier
             .height(200.dp)
             .combinedClickable(
                 onClick = {
-                    viewModel.selectedMenuState.value = menuItem
-                    Log.e("menuIds", "navController to product detail")
-
-                    navController.navigate("order_detail_screen/$tesIds")
+                          navController.navigate("product_detail_screen/[${menuItem.menu_id}]")
                 },
                 onLongClick = {
                     viewModel.selectedMenuState.value = menuItem
-                    showCheckbox = !showCheckbox
-                    checkedState = !checkedState
-                    navController.navigate("order_detail_screen")
+//                    showCheckbox.value = !showCheckbox.value
+//                    checkedStateList[position] = !checkedStateList[position]
+
+//                    navController.navigate("order_detail_screen")
                 }
-            )
-            /*.clickable {
-                viewModel.selectedMenuState.value = menuItem
-                navController.navigate("product_detail_screen")
-            }*/,
+            ),
         shape = RoundedCornerShape(15.dp),
         elevation = CardDefaults.cardElevation(5.dp)
     ) {
@@ -144,15 +144,102 @@ fun ProductImageCard2(/*imgRes:Int=R.drawable.food,*/ menuItem: Menu, navControl
                 contentAlignment = Alignment.BottomStart
             ) {
                 Column() {
-                    AnimatedVisibility(visible =showCheckbox) {
-                        Checkbox(
-                            checked = checkedState,
-                            onCheckedChange = { isChecked ->
-                                checkedState = isChecked
-                            }
-                        )
 
+                    Text(text = menuItem.menu_name, style = TextStyle(color = Color.White, fontSize = 16.sp))
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(text = "Rp${menuItem.menu_price}", style = TextStyle(color = Color.White, fontSize = 16.sp))
+                }
+            }
+        }
+    }
+}
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun OrderImageCard3(menuItem: Menu, navController: NavHostController,
+                      viewModel: MenuViewModel, selectedMenuId: MutableState<List<Int>>,
+//                      showCheckbox:  MutableState<Boolean>,
+//                      checkedState: MutableState<Boolean>
+                      checkedStateList: SnapshotStateList<Boolean>,
+                      position: Int
+) {
+    var checkedState by remember { mutableStateOf(false) }
+//    var showCheckbox by remember { mutableStateOf(false) }
+//    val tesIds = arrayListOf(1, 2)
+    Card(
+        modifier = Modifier
+            .height(200.dp)
+            .combinedClickable(
+                onClick = {
+                    viewModel.selectedMenuState.value = menuItem
+                    Log.e("menuIds", "navController to product detail")
+                    Log.e("menuIds", "selectedMenuId: ${selectedMenuId.value}")
+                    checkedState = !checkedState
+                    Log.e("ProductItem", "checkedState: $checkedState")
+
+//                    checkedStateList[position] = !checkedStateList[position]
+                    if (checkedStateList.size <= position) {
+                        checkedStateList.add(checkedState)
+                    } else {
+                        checkedStateList[position] = checkedState
                     }
+                    Log.e("ProductItem", "checkedStateList: ${checkedStateList[position]}")
+//                    Log.e("ProductItem", "checkedStateList: ${checkedStateList[position]}")
+
+//                    val newItem = menuItem.menu_id // New item to be added
+//
+//                    val currentList = selectedMenuId.value // Get the current list
+//
+//                    if (!currentList.contains(newItem)) {
+//                        val newList = currentList + newItem // Create a new list by adding the new item
+//                        selectedMenuId.value = newList // Update the MutableState variable with the new list
+//                    }
+//                    Log.e("menuIds", "selectedMenuId: ${selectedMenuId.value}")
+
+                },
+                onLongClick = {
+                    viewModel.selectedMenuState.value = menuItem
+//                    showCheckbox.value = !showCheckbox.value
+//                    checkedStateList[position] = !checkedStateList[position]
+
+//                    navController.navigate("order_detail_screen")
+                }
+            ),
+        shape = RoundedCornerShape(15.dp),
+        elevation = CardDefaults.cardElevation(5.dp)
+    ) {
+        var sizeImage by remember { mutableStateOf(IntSize.Zero) }
+        val gradient = Brush.verticalGradient(
+            colors = listOf(Color.Transparent, Color.Black),
+            startY = sizeImage.height.toFloat()/3,  // 1/3
+            endY = sizeImage.height.toFloat()
+        )
+        Box(modifier = Modifier.size(200.dp)) {
+            AsyncImage(
+                model = menuItem.menu_image,
+                contentDescription = menuItem.menu_name,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.onGloballyPositioned {
+                    sizeImage = it.size
+                }
+            )
+
+            Box(modifier = Modifier
+                .matchParentSize()
+                .background(gradient))
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .padding(12.dp),
+                contentAlignment = Alignment.BottomStart
+            ) {
+                Column() {
+                    Checkbox(
+                        checked = checkedState,
+                        onCheckedChange = { isChecked ->
+                                checkedState = isChecked
+//                            checkedStateList[position] = isChecked
+                        }
+                    )
+
                     Text(text = menuItem.menu_name, style = TextStyle(color = Color.White, fontSize = 16.sp))
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(text = "Rp${menuItem.menu_price}", style = TextStyle(color = Color.White, fontSize = 16.sp))
@@ -171,7 +258,7 @@ fun OrderImageCard2(/*imgRes:Int=R.drawable.food,*/ menuItem: Menu, navControlle
             .combinedClickable(
                 onClick = {
                     viewModel.selectedMenuState.value = menuItem
-                    navController.navigate("order_detail_screen/$tesId")
+                    navController.navigate("order_detail_screen/[6]")
                 },
                 onLongClick = {
                     viewModel.selectedMenuState.value = menuItem

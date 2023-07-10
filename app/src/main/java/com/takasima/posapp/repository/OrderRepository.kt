@@ -12,6 +12,7 @@ class OrderRepository {
     private val apiService = retrofit.create(UserApi::class.java)
 
     suspend fun createOrder(createOrderRequest: CreateOrderRequest, token: String): Response<CreateOrderResponse> {
-        return apiService.createOrder(createOrderRequest, token)
+        return apiService.createOrder(createOrderRequest, "Bearer $token")
     }
+
 }

@@ -5,7 +5,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -14,23 +18,45 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.takasima.posapp.ui.components.tabs
+import com.takasima.posapp.ui.components.TabItem
+import com.takasima.posapp.ui.screen.common.DrinkScreen
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun OrderScreen(navController: NavController) {
+fun OrderScreen(navController: NavHostController) {
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
     val orderNavController = rememberNavController()
 
-    Scaffold() { paddingValues ->
+    val tabs = listOf(
+        TabItem(
+            title = "Makanan",
+            screen = { FoodScreen(navController = navController) }
+        ),
+        TabItem(
+            title = "Minuman",
+            screen = { DrinkScreen(navController = navController) }
+        )
+    )
+
+    Scaffold(
+        floatingActionButton = {
+            ExtendedFloatingActionButton(onClick = {
+                navController.navigate("order_detail_screen/[5,6]")
+
+            }) {
+                Icon(imageVector = Icons.Default.Add, contentDescription ="" )
+                Text(text = "Add Order")
+            }
+        }
+    ) { paddingValues ->
         Column(
             modifier = Modifier.padding(paddingValues)
         ) {
-            TabRow(
+            /*TabRow(
                 selectedTabIndex = pagerState.currentPage,
             ) {
                 tabs.forEachIndexed { index, item ->
@@ -46,7 +72,9 @@ fun OrderScreen(navController: NavController) {
                 state = pagerState
             ) {
                 tabs[pagerState.currentPage].screen()
-            }
+            }*/
+            FoodScreen(navController = navController)
+
         }
     }
 }

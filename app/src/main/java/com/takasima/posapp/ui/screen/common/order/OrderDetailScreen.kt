@@ -2,6 +2,8 @@ package com.takasima.posapp.ui.screen.common.order
 
 import android.icu.number.Scale.none
 import android.util.Log
+import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -34,17 +36,22 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.takasima.posapp.data.order.CreateOrderRequest
+import com.takasima.posapp.data.order.MenuItemRequest
+import com.takasima.posapp.data.order.convertToMenuItemRequest
 import com.takasima.posapp.data.product.MenuById
 import com.takasima.posapp.models.MenuViewModel
+import com.takasima.posapp.models.OrderViewModel
 import com.takasima.posapp.ui.components.MyTextFieldComponent
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
 @Composable
-fun OrderDetailScreen(navController: NavHostController, menuIds:String="[6]") {
+fun OrderDetailScreen(navController: NavHostController, menuIds:String/*="[6]"*/) {
     val context = LocalContext.current
     val dataStoreManager = remember { DataStoreManager.getInstance(context) }
     val storedToken = runBlocking { dataStoreManager.getAuthToken.first() }
+    val orderViewModel: OrderViewModel = viewModel()
 
     val menuViewModel: MenuViewModel = viewModel()
     val tes:  List<Int> = listOf(0)
@@ -59,6 +66,9 @@ fun OrderDetailScreen(navController: NavHostController, menuIds:String="[6]") {
     Text(text = "Order Detail Screen")
 //    val listItem: List<Map<String, Int>> = emptyList()
     val listItem = remember { mutableStateOf(emptyList<Map<String, Int>>()) }
+    val orderNote = remember { mutableStateOf("") }
+
+    val totalPrice = remember { mutableStateOf(0) }
     Column(Modifier.padding(16.dp)) {
         when {
             menuListState.isEmpty() -> {
@@ -74,7 +84,7 @@ fun OrderDetailScreen(navController: NavHostController, menuIds:String="[6]") {
                         var qty = remember { mutableStateOf(0) }
 
 
-                        SelectedMenuCard(menuItem = menuListState[index], listItem = listItem, qty)
+                        SelectedMenuCard(menuItem = menuListState[index], listItem = listItem, qty, totalPrice)
 
                     }
                 })
@@ -82,10 +92,13 @@ fun OrderDetailScreen(navController: NavHostController, menuIds:String="[6]") {
 
         }
 
-        val orderNote = remember { mutableStateOf("") }
 
         MyTextFieldComponent(labelValue = "Note", icon = Icons.Default.Edit,textValue = orderNote)
         Text(text = "Ringkasan Pesanan")
+        Row(horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(text = "Total Harga")
+            Text(text = "Rp0")
+        }
 
         Button(onClick = {
             Log.e("tes", "order note -> ${orderNote.value.toString()}")
@@ -99,11 +112,40 @@ fun OrderDetailScreen(navController: NavHostController, menuIds:String="[6]") {
             Text(text = "Lihat isi pesanan")
 
         }
+
+        Button(onClick = {
+            val convertListItem = convertToMenuItemRequest(listItem)
+            val request = CreateOrderRequest(
+                orderNote = "memesan semua barang",
+                listItem = convertListItem/*listOf(
+                    MenuItemRequest(menuId = 4, quantity = 3),
+                    MenuItemRequest(menuId = 5, quantity = 3),
+                    MenuItemRequest(menuId = 6, quantity = 3)
+                )*/
+            )
+            Log.e("FoodScreen", "$convertListItem")
+            Log.e("FoodScreen", "create request order")
+            if (storedToken != null) {
+                orderViewModel.createOrder(request, storedToken)
+                Log.e("FoodScreen", "order process in viewmodel")
+                Toast.makeText(context, "Pesanan berhasil dibuat", Toast.LENGTH_SHORT).show()
+                navController.navigate("order_screen")
+            } else {
+                Log.e("FoodScreen", "Token is null")
+            }
+        }) {
+            Text(text = "Selesaikan pesanan")
+        }
     }
 }
 
 @Composable
-fun SelectedMenuCard(menuItem: MenuById,  listItem: MutableState<List<Map<String, Int>>>, qty: MutableState<Int>) {
+fun SelectedMenuCard(menuItem: MenuById,
+                     listItem: MutableState<List<Map<String, Int>>>,
+                     qty: MutableState<Int>,
+                     totalPrice: MutableState<Int>
+
+) {
     Row(Modifier.fillMaxHeight()) {
         AsyncImage(
             model = menuItem.menu_image,
@@ -121,6 +163,7 @@ fun SelectedMenuCard(menuItem: MenuById,  listItem: MutableState<List<Map<String
         IconButton(onClick = {
             if (qty.value > 0) {
                 qty.value--
+//                totalPrice.value = menuItem.menu_price!!.toInt() * qty.value
                 addItemOrUpdateQty(menuItem.menu_id!!, qty.value, listItem)
             }
         }) {
@@ -132,6 +175,7 @@ fun SelectedMenuCard(menuItem: MenuById,  listItem: MutableState<List<Map<String
         }
         IconButton(onClick = {
             qty.value++
+//            totalPrice.value = menuItem.menu_price!!.toInt() * qty.value
             addItemOrUpdateQty(menuItem.menu_id!!, qty.value, listItem)
 
         }) {
