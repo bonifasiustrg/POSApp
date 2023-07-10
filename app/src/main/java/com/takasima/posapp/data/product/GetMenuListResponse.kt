@@ -1,4 +1,4 @@
-package com.takasima.posapp.ui.screen.common.product
+package com.takasima.posapp.data.product
 
 data class GetMenuListResponse(
     val success: Boolean,

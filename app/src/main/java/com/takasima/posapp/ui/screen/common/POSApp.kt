@@ -1,5 +1,6 @@
 package com.takasima.posapp.ui.screen.common
 
+import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.DrawerValue
@@ -15,10 +16,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.takasima.posapp.ui.components.BottomMenu
 import com.takasima.posapp.ui.components.BackTopBar
 import com.takasima.posapp.ui.components.BottomMenuScreen
@@ -26,6 +29,7 @@ import com.takasima.posapp.ui.components.CustomProductTopBar
 import com.takasima.posapp.ui.components.CustomTopBar
 import com.takasima.posapp.ui.screen.common.history.HistoryScreen
 import com.takasima.posapp.ui.screen.common.main.ProfileScreen
+import com.takasima.posapp.ui.screen.common.order.OrderDetailScreen
 import com.takasima.posapp.ui.screen.common.order.OrderScreen
 import com.takasima.posapp.ui.screen.common.product.AddMenuScreen
 import com.takasima.posapp.ui.screen.common.product.ProductDetailScreen
@@ -115,9 +119,27 @@ fun POSApp(mainNavController: NavHostController) {
             composable("product_add_screen") {
                 AddMenuScreen(navController)
             }
-            composable("product_detail_screen") {
-                ProductDetailScreen(navController)
+
+            composable("product_detail_screen/{menuIds}",
+                arguments = listOf(navArgument("menuIds") { type = NavType.IntType})
+            ) {backStackEntry ->
+                val menuIds = backStackEntry.arguments?.getInt("menuIds")
+//                val menuIdsList = menuIdsArray?.toList()?.map { it.toInt() }?.toCollection(ArrayList())
+                Log.e("menuIds", "go to product detail")
+                ProductDetailScreen(navController, menuIds!!)
             }
+
+            composable("order_detail_screen/{menuIds}",
+                arguments = listOf(navArgument("menuIds") { type = NavType.StringType })
+            ) {backStackEntry ->
+                val menuIds = backStackEntry.arguments?.getString("menuIds")
+//                val menuIdsList = menuIdsArray?.toList()?.map { it.toInt() }?.toCollection(ArrayList())
+                Log.e("POSApp order detail", "go to order detail")
+                OrderDetailScreen(navController, menuIds!!)
+            }
+            /*composable("order_detail_screen") {
+                OrderDetailScreen(navController)
+            }*/
             composable("product_food_screen") {
                 ProductFoodScreen(navController)
             }

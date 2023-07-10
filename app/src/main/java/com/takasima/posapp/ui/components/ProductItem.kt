@@ -1,8 +1,11 @@
 package com.takasima.posapp.ui.components
 
+import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,10 +24,12 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -44,7 +49,7 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.takasima.posapp.R
 import com.takasima.posapp.models.MenuViewModel
-import com.takasima.posapp.ui.screen.common.product.Menu
+import com.takasima.posapp.data.product.Menu
 import com.takasima.posapp.ui.theme.Primary
 
 @Composable
@@ -81,14 +86,36 @@ fun ProductImageCard(imgRes:Int/*
         }
     }
 }
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ProductImageCard2(/*imgRes:Int=R.drawable.food,*/ menuItem: Menu, navController: NavHostController,  viewModel: MenuViewModel) {
+fun ProductImageCard2(/*imgRes:Int=R.drawable.food,*/ menuItem: Menu, navController: NavHostController, viewModel: MenuViewModel) {
+    var checkedState by remember { mutableStateOf(false) }
+    var showCheckbox by remember { mutableStateOf(false) }
+//    val tesIds = arrayListOf(1, 2)
+    val tesIds = "[5,6]"
+//    val menuIdsList: ArrayList<Int?> = tesIds.map { it }.toCollection(ArrayList())
+    val selectedMenu = remember { mutableStateListOf<Menu>() }
     Card(
-        modifier = Modifier.height(200.dp)
-            .clickable {
+        modifier = Modifier
+            .height(200.dp)
+            .combinedClickable(
+                onClick = {
+                    viewModel.selectedMenuState.value = menuItem
+                    Log.e("menuIds", "navController to product detail")
+
+                    navController.navigate("order_detail_screen/$tesIds")
+                },
+                onLongClick = {
+                    viewModel.selectedMenuState.value = menuItem
+                    showCheckbox = !showCheckbox
+                    checkedState = !checkedState
+                    navController.navigate("order_detail_screen")
+                }
+            )
+            /*.clickable {
                 viewModel.selectedMenuState.value = menuItem
                 navController.navigate("product_detail_screen")
-            },
+            }*/,
         shape = RoundedCornerShape(15.dp),
         elevation = CardDefaults.cardElevation(5.dp)
     ) {
@@ -107,13 +134,25 @@ fun ProductImageCard2(/*imgRes:Int=R.drawable.food,*/ menuItem: Menu, navControl
                     sizeImage = it.size
                 }
             )
-            Box(modifier = Modifier.matchParentSize().background(gradient))
+
+            Box(modifier = Modifier
+                .matchParentSize()
+                .background(gradient))
             Box(modifier = Modifier
                 .fillMaxSize()
                 .padding(12.dp),
                 contentAlignment = Alignment.BottomStart
             ) {
                 Column() {
+                    AnimatedVisibility(visible =showCheckbox) {
+                        Checkbox(
+                            checked = checkedState,
+                            onCheckedChange = { isChecked ->
+                                checkedState = isChecked
+                            }
+                        )
+
+                    }
                     Text(text = menuItem.menu_name, style = TextStyle(color = Color.White, fontSize = 16.sp))
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(text = "Rp${menuItem.menu_price}", style = TextStyle(color = Color.White, fontSize = 16.sp))
@@ -122,14 +161,27 @@ fun ProductImageCard2(/*imgRes:Int=R.drawable.food,*/ menuItem: Menu, navControl
         }
     }
 }
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OrderImageCard2(/*imgRes:Int=R.drawable.food,*/ menuItem: Menu, navController: NavHostController,  viewModel: MenuViewModel) {
+fun OrderImageCard2(/*imgRes:Int=R.drawable.food,*/ menuItem: Menu, navController: NavHostController, viewModel: MenuViewModel) {
+    val tesId= "[5]"
     Card(
-        modifier = Modifier.height(200.dp)
-            .clickable {
-                viewModel.selectedMenuState.value = menuItem
-                navController.navigate("product_detail_screen")
-            },
+        modifier = Modifier
+            .height(200.dp)
+            .combinedClickable(
+                onClick = {
+                    viewModel.selectedMenuState.value = menuItem
+                    navController.navigate("order_detail_screen/$tesId")
+                },
+                onLongClick = {
+                    viewModel.selectedMenuState.value = menuItem
+                    navController.navigate("profile_screen")
+                }
+            )
+        /*.clickable {
+            viewModel.selectedMenuState.value = menuItem
+            navController.navigate("product_detail_screen")
+        }*/,
         shape = RoundedCornerShape(15.dp),
         elevation = CardDefaults.cardElevation(5.dp)
     ) {
@@ -148,21 +200,15 @@ fun OrderImageCard2(/*imgRes:Int=R.drawable.food,*/ menuItem: Menu, navControlle
                     sizeImage = it.size
                 }
             )
-            Box(modifier = Modifier.matchParentSize().background(gradient))
+            Box(modifier = Modifier
+                .matchParentSize()
+                .background(gradient))
             Box(modifier = Modifier
                 .fillMaxSize()
                 .padding(12.dp),
                 contentAlignment = Alignment.BottomStart
             ) {
-
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                    Column() {
-                        Text(text = menuItem.menu_name, style = TextStyle(color = Color.White, fontSize = 16.sp))
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = "Rp${menuItem.menu_price}", style = TextStyle(color = Color.White, fontSize = 16.sp))
-
-
-                    }
+                Column() {
                     Button(onClick = { /*TODO*/ },
                         shape = CircleShape,
                         colors = ButtonDefaults.buttonColors(Primary)
@@ -170,6 +216,9 @@ fun OrderImageCard2(/*imgRes:Int=R.drawable.food,*/ menuItem: Menu, navControlle
 //                        Text(text = "HALO")
                         Icon(imageVector = Icons.Default.Add, contentDescription = "")
                     }
+                    Text(text = menuItem.menu_name, style = TextStyle(color = Color.White, fontSize = 16.sp))
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(text = "Rp${menuItem.menu_price}", style = TextStyle(color = Color.White, fontSize = 16.sp))
                 }
             }
         }
