@@ -1,4 +1,4 @@
-package com.takasima.posapp.ui.screen.owner.branch
+package com.takasima.posapp.data.branch
 
 data class GetBranchListResponse(
     val success: Boolean,

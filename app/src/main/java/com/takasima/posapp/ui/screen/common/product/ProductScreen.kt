@@ -10,8 +10,11 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
@@ -58,11 +61,24 @@ fun ProductScreen(navController: NavHostController) {
         )
     )
 
-    Scaffold() { paddingValues ->
+    Scaffold(
+        floatingActionButton = {
+            ExtendedFloatingActionButton(onClick = {
+                navController.navigate("product_add_screen")
+            }) {
+                Icon(
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = "Add",
+                    modifier = Modifier.padding(end = 4.dp)
+                )
+                Text(text = "Add Menu")
+            }
+        }
+    ) { paddingValues ->
         Column(
             modifier = Modifier.padding(paddingValues)
         ) {
-            TabRow(
+            /*TabRow(
                 selectedTabIndex = pagerState.currentPage,
             ) {
                 tabsProduct.forEachIndexed { index, item ->
@@ -78,9 +94,9 @@ fun ProductScreen(navController: NavHostController) {
                 state = pagerState
             ) {
                 tabsProduct[pagerState.currentPage].screen()
-            }
+            }*/
 
-
+            ProductFoodScreen(navController)
         }
     }
 }

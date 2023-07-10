@@ -82,11 +82,14 @@ fun SelectedMenuCard(menuItem:MenuById) {
         AsyncImage(
             model = menuItem.menu_image,
             contentDescription = menuItem.menu_name,
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .height(200.dp)
+                .fillMaxSize()
         )
         Text(text = menuItem.menu_name!!)
         Text(text = menuItem.menu_price!!)
         Text(text = menuItem.menu_qty!!)
-        Text(text = menuItem.menu_description!!)
+        Text(text = menuItem.menu_description.toString())
     }
 }

@@ -11,7 +11,8 @@ import com.takasima.posapp.data.order.CreateOrderRequest
 import com.takasima.posapp.data.order.CreateOrderResponse
 import com.takasima.posapp.data.product.GetMenuByIdList
 import com.takasima.posapp.data.product.GetMenuListResponse
-import com.takasima.posapp.ui.screen.owner.branch.GetBranchListResponse
+import com.takasima.posapp.data.branch.GetBranchListResponse
+import com.takasima.posapp.data.history.GetHistoryResponse
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
@@ -65,5 +66,8 @@ interface UserApi {
         @Header("Authorization") token: String // Adding Authorization header
     ): Response<CreateOrderResponse>
 
-
+    @GET("order/list")
+    suspend fun getHistory(
+        @Header("Authorization") token: String
+    ): Response<GetHistoryResponse>
 }

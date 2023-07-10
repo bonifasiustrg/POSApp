@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.takasima.posapp.data.branch.Branch
 import com.takasima.posapp.models.BranchViewModel
 import com.takasima.posapp.ui.theme.Neutral
 import kotlinx.coroutines.flow.first

@@ -53,8 +53,8 @@ fun ProductFoodScreen(navController: NavHostController, branchId: Int=1) {
 //        mutableStateOf(checkedStateList.any { it })
 //    }
 
-    Column {
-        Button(onClick = {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        /*Button(onClick = {
             Log.e("selectedMenuId", selectedMenuId.toString())
             val checkedIds = checkedStateList
                 .mapIndexed { index, isChecked -> index to isChecked }
@@ -67,7 +67,7 @@ fun ProductFoodScreen(navController: NavHostController, branchId: Int=1) {
 
         }) {
             Text(text = "Add to Cart")
-        }
+        }*/
         when {
             menuListState.isEmpty() -> {
                 // Menampilkan indikator loading atau pesan lainnya saat data sedang diambil

@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.takasima.posapp.repository.BranchRepository
-import com.takasima.posapp.ui.screen.owner.branch.Branch
+import com.takasima.posapp.data.branch.Branch
 import kotlinx.coroutines.launch
 
 class BranchViewModel: ViewModel() {
