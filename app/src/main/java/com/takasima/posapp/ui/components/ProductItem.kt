@@ -21,14 +21,18 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -96,8 +100,11 @@ fun ProductImageCard2(menuItem: Menu, navController: NavHostController,
 //                      showCheckbox:  MutableState<Boolean>,
 //                      checkedState: MutableState<Boolean>
                       checkedStateList: SnapshotStateList<Boolean>,
-                      position: Int
+                      position: Int,
+                      token:String
 ) {
+    val menuViewModel = MenuViewModel()
+    val showProductOption = remember { mutableStateOf(false) }
 //    var checkedState by remember { mutableStateOf(false) }
 ////    var showCheckbox by remember { mutableStateOf(false) }
 ////    val tesIds = arrayListOf(1, 2)
@@ -106,10 +113,13 @@ fun ProductImageCard2(menuItem: Menu, navController: NavHostController,
             .height(200.dp)
             .combinedClickable(
                 onClick = {
-                          navController.navigate("product_detail_screen/[${menuItem.menu_id}]")
+                    viewModel.selectedMenuState.value = menuItem
+
+                    navController.navigate("product_detail_screen/[${menuItem.menu_id}]")
                 },
                 onLongClick = {
                     viewModel.selectedMenuState.value = menuItem
+                    showProductOption.value = true
 //                    showCheckbox.value = !showCheckbox.value
 //                    checkedStateList[position] = !checkedStateList[position]
 
@@ -144,6 +154,31 @@ fun ProductImageCard2(menuItem: Menu, navController: NavHostController,
                 contentAlignment = Alignment.BottomStart
             ) {
                 Column() {
+                    if (showProductOption.value) {
+                        Row() {
+                            IconButton(onClick = {
+                                navController.navigate("product_edit_screen/[${menuItem.menu_id}]")
+                            }) {
+
+                                Icon(imageVector = Icons.Default.Edit, contentDescription = "")
+                            }
+
+                            IconButton(onClick = {
+                                menuViewModel.deleteMenuItem(token, menuItem.menu_id)
+                                Log.e("delete", menuViewModel.deleteSuccess.value.toString())
+                                showProductOption.value = false
+                                navController.navigate("product_screen")
+                            }) {
+                                Icon(imageVector = Icons.Default.Delete, contentDescription = "")
+                            }
+                        }
+                        Button(onClick = {
+                            showProductOption.value = false
+                        }) {
+                            Text(text = "Batal")
+                        }
+                    }
+
 
                     Text(text = menuItem.menu_name, style = TextStyle(color = Color.White, fontSize = 16.sp))
                     Spacer(modifier = Modifier.height(4.dp))

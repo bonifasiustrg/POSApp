@@ -3,6 +3,8 @@ package com.takasima.posapp.models
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.takasima.posapp.repository.MenuRepository
@@ -40,4 +42,33 @@ class MenuViewModel : ViewModel() {
 
         }
     }
+
+    private val _deleteSuccess = MutableLiveData<Boolean>()
+    val deleteSuccess: LiveData<Boolean> = _deleteSuccess
+
+    fun deleteMenuItem(token:String, id: Int) {
+        viewModelScope.launch {
+            try {
+                val response = menuRepository.deleteMenuItem(token, id)
+                _deleteSuccess.value = response?.success
+                Log.e("MenuViewModel", "deleteMenuItem: $response $id")
+            } catch (e: Exception) {
+                Log.e("MenuViewModel", "deleteMenuItem: ${e.message}")
+            }
+        }
+    }
+
+//    private val _updateImageStatus = MutableLiveData<Result<YourResponseModel>>()
+//    val updateImageStatus: LiveData<Result<YourResponseModel>> get() = _updateImageStatus
+//
+//    fun updateImage(id: Int, base64Image: String) {
+//        viewModelScope.launch {
+//            try {
+//                val response = repository.updateImage(id, base64Image)
+//                _updateImageStatus.value = Result.success(response.body())
+//            } catch (e: Exception) {
+//                _updateImageStatus.value = Result.failure(e)
+//            }
+//        }
+//    }
 }

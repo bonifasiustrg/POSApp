@@ -84,7 +84,8 @@ fun ProductFoodScreen(navController: NavHostController, branchId: Int=1) {
                                 ProductImageCard2(menuListState[index], navController,
                                     viewModel, selectedMenuId,
                                     checkedStateList = checkedStateList,
-                                    position = index
+                                    position = index,
+                                    storedToken!!
                                 )
                             }
                         }
