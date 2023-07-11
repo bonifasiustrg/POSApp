@@ -3,6 +3,7 @@ package com.takasima.posapp.ui.screen.common.order
 import DataStoreManager
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +16,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -58,46 +60,52 @@ fun FoodScreen(navController: NavHostController, branchId: Int=1) {
 //    }
 //    val listIdxMenu = remember { mutableStateOf(emptyList<Int>()) }
 
-    Column(Modifier.fillMaxSize()) {
-        if (selectedMenuId.value.isNotEmpty()) {
-            ExtendedFloatingActionButton(onClick = {
-//            navController.navigate("order_detail_screen/[5,6]")
+    Surface() {
+        Column(Modifier.fillMaxSize()) {
+            when {
+                menuListState.isEmpty() -> {
+                    // Menampilkan indikator loading atau pesan lainnya saat data sedang diambil
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
 
-                Log.e("selectedMenuId", selectedMenuId.value.toString())
-                navController.navigate("order_detail_screen/${selectedMenuId.value}")
+                }
 
-            }) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "")
-                Text(text = "Add Order")
-            }
-        }
-        when {
-            menuListState.isEmpty() -> {
-                // Menampilkan indikator loading atau pesan lainnya saat data sedang diambil
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                else -> {
 
-            }
-
-            else -> {
-
-                LazyVerticalGrid(modifier = Modifier.padding(horizontal = 4.dp),
-                    columns = GridCells.Fixed(2),
-                    content =  {
-                        items(menuListState.size) { index ->
-                            Box(modifier = Modifier.padding(8.dp)) {
-                                OrderImageCard3(menuListState[index], navController,
-                                    viewModel, selectedMenuId,
-                                    checkedStateList = checkedStateList,
-                                    position = index
-                                )
+                    LazyVerticalGrid(modifier = Modifier.padding(horizontal = 4.dp),
+                        columns = GridCells.Fixed(2),
+                        content =  {
+                            items(menuListState.size) { index ->
+                                Box(modifier = Modifier.padding(8.dp)) {
+                                    OrderImageCard3(menuListState[index], navController,
+                                        viewModel, selectedMenuId,
+                                        checkedStateList = checkedStateList,
+                                        position = index
+                                    )
+                                }
                             }
                         }
-                    }
-                )
+                    )
+                }
+            }
+
+
+        }
+        Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Bottom) {
+
+            if (selectedMenuId.value.isNotEmpty()) {
+                ExtendedFloatingActionButton(onClick = {
+//            navController.navigate("order_detail_screen/[5,6]")
+                    Log.e("selectedMenuId", selectedMenuId.value.toString())
+                    navController.navigate("order_detail_screen/${selectedMenuId.value}")
+
+                },
+                    modifier = Modifier.align(Alignment.End).padding(end = 16.dp, bottom = 16.dp)
+                ) {
+                    Icon(imageVector = Icons.Default.Add, contentDescription = "")
+                    Text(text = "Add Order")
+                }
             }
         }
-
-
     }
 }
 /*@Composable
