@@ -74,7 +74,7 @@ fun HeadingTextComponent3(value: String) {
             fontWeight = FontWeight.Bold,
             fontStyle = FontStyle.Normal
         ),
-        color = Secondary
+        color = Primary
     )
 }
 

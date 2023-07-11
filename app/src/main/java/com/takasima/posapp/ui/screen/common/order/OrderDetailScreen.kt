@@ -167,13 +167,10 @@ fun OrderDetailScreen(navController: NavHostController, menuIds:String/*="[6]"*/
                         orderViewModel.createOrder(request, storedToken)
                         Log.e("FoodScreen", "order process in viewmodel")
 
-                        if (orderViewModel.response.value?.isSuccessful == true) {
-                            Toast.makeText(context, "Pesanan berhasil dibuat", Toast.LENGTH_SHORT).show()
-                            navController.navigate("order_screen")
-                        } else {
-                            Toast.makeText(context, "Pesanan gagal dibuat", Toast.LENGTH_SHORT).show()
-                        }
+                        Toast.makeText(context, "Pesanan berhasil dibuat", Toast.LENGTH_SHORT).show()
+                        navController.navigate("order_screen")
                     } else {
+                        Toast.makeText(context, "Pesanan gagal dibuat", Toast.LENGTH_SHORT).show()
                         Log.e("FoodScreen", "Token is null")
                     }
                 }) {
@@ -239,7 +236,7 @@ fun SelectedMenuCard(menuItem: MenuById,
                 onClick = {
                     if (menuItem.menu_qty!!.toInt() == 0) {
                         Toast.makeText(context, "Stok Habis", Toast.LENGTH_SHORT).show()
-                    }else if (qty.value >= 0 && qty.value <= menuItem.menu_qty!!.toInt()) {
+                    }else if (qty.value >= 0 && qty.value < menuItem.menu_qty!!.toInt()) {
                         qty.value++
                         totalPrice.value = totalPrice.value - tempItemTotalPrice.value
                         tempItemTotalPrice.value = menuItem.menu_price!!.toInt() * qty.value

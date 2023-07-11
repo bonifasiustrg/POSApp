@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -258,7 +259,7 @@ fun OrderImageCard3(menuItem: Menu, navController: NavHostController,
                 contentAlignment = Alignment.BottomStart
             ) {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                    Column() {
+                    Column(modifier = Modifier.width(110.dp)) {
                         /*Checkbox(
                             checked = checkedState,
                             onCheckedChange = { isChecked ->
