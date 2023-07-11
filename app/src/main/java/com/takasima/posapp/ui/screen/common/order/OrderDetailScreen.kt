@@ -219,6 +219,7 @@ fun SelectedMenuCard(menuItem: MenuById,
                     Toast.makeText(context, "Stok Habis", Toast.LENGTH_SHORT).show()
                 } else if  (qty.value > 0 && qty.value <= menuItem.menu_qty!!.toInt()) {
                     qty.value--
+                    totalPrice.value = totalPrice.value - tempItemTotalPrice.value
                     tempItemTotalPrice.value = menuItem.menu_price!!.toInt() * qty.value
                     totalPrice.value = totalPrice.value + tempItemTotalPrice.value
 
@@ -240,6 +241,7 @@ fun SelectedMenuCard(menuItem: MenuById,
                         Toast.makeText(context, "Stok Habis", Toast.LENGTH_SHORT).show()
                     }else if (qty.value >= 0 && qty.value <= menuItem.menu_qty!!.toInt()) {
                         qty.value++
+                        totalPrice.value = totalPrice.value - tempItemTotalPrice.value
                         tempItemTotalPrice.value = menuItem.menu_price!!.toInt() * qty.value
                         totalPrice.value = totalPrice.value + tempItemTotalPrice.value
 
