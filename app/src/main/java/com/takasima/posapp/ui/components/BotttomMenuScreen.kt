@@ -27,7 +27,7 @@ fun BottomMenuScreen(navController: NavController) {
         BottomMenu.Orders,
         BottomMenu.Products,
         BottomMenu.Histories,
-        BottomMenu.Shops
+//        BottomMenu.Shops
     )
 
     NavigationBar(contentColor = Color.Black /*item color*/,

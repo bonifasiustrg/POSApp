@@ -45,8 +45,7 @@ fun OrderScreen(navController: NavHostController) {
     Scaffold(
         floatingActionButton = {
             ExtendedFloatingActionButton(onClick = {
-                navController.navigate("order_detail_screen/[5,6]")
-
+//                navController.navigate("order_detail_screen/[5,6]")
             }) {
                 Icon(imageVector = Icons.Default.Add, contentDescription ="" )
                 Text(text = "Add Order")

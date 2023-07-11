@@ -30,6 +30,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -42,12 +44,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
@@ -97,8 +101,6 @@ fun ProductImageCard(imgRes:Int/*
 @Composable
 fun ProductImageCard2(menuItem: Menu, navController: NavHostController,
                       viewModel: MenuViewModel, selectedMenuId: MutableState<List<Int>>,
-//                      showCheckbox:  MutableState<Boolean>,
-//                      checkedState: MutableState<Boolean>
                       checkedStateList: SnapshotStateList<Boolean>,
                       position: Int,
                       token:String
@@ -198,45 +200,34 @@ fun OrderImageCard3(menuItem: Menu, navController: NavHostController,
                       position: Int
 ) {
     var checkedState by remember { mutableStateOf(false) }
-//    var showCheckbox by remember { mutableStateOf(false) }
-//    val tesIds = arrayListOf(1, 2)
+    val btnIcon = remember {
+        mutableStateOf(Icons.Default.Add)
+    }
     Card(
         modifier = Modifier
             .height(200.dp)
             .combinedClickable(
                 onClick = {
-                    viewModel.selectedMenuState.value = menuItem
-                    Log.e("menuIds", "navController to product detail")
-                    Log.e("menuIds", "selectedMenuId: ${selectedMenuId.value}")
-                    checkedState = !checkedState
-                    Log.e("ProductItem", "checkedState: $checkedState")
+                    if (menuItem.menu_qty.toInt() != 0) {
 
-//                    checkedStateList[position] = !checkedStateList[position]
-                    if (checkedStateList.size <= position) {
-                        checkedStateList.add(checkedState)
-                    } else {
-                        checkedStateList[position] = checkedState
+                        viewModel.selectedMenuState.value = menuItem
+                        Log.e("menuIds", "navController to product detail")
+
+                        checkedState = !checkedState
+                        Log.e("ProductItem", "checkedState: $checkedState")
+                        btnIcon.value = if (checkedState) {
+                            Icons.Default.Check
+                        } else {
+                            Icons.Default.Add
+                        }
+                        if (checkedState) {
+                            selectedMenuId.value = selectedMenuId.value + menuItem.menu_id
+                            Log.e("menuIds", "selectedMenuId: ${selectedMenuId.value}")
+                        } else {
+                            selectedMenuId.value = selectedMenuId.value - menuItem.menu_id
+                            Log.e("menuIds", "selectedMenuId: ${selectedMenuId.value}")
+                        }
                     }
-                    Log.e("ProductItem", "checkedStateList: ${checkedStateList[position]}")
-//                    Log.e("ProductItem", "checkedStateList: ${checkedStateList[position]}")
-
-//                    val newItem = menuItem.menu_id // New item to be added
-//
-//                    val currentList = selectedMenuId.value // Get the current list
-//
-//                    if (!currentList.contains(newItem)) {
-//                        val newList = currentList + newItem // Create a new list by adding the new item
-//                        selectedMenuId.value = newList // Update the MutableState variable with the new list
-//                    }
-//                    Log.e("menuIds", "selectedMenuId: ${selectedMenuId.value}")
-
-                },
-                onLongClick = {
-                    viewModel.selectedMenuState.value = menuItem
-//                    showCheckbox.value = !showCheckbox.value
-//                    checkedStateList[position] = !checkedStateList[position]
-
-//                    navController.navigate("order_detail_screen")
                 }
             ),
         shape = RoundedCornerShape(15.dp),
@@ -266,18 +257,71 @@ fun OrderImageCard3(menuItem: Menu, navController: NavHostController,
                 .padding(12.dp),
                 contentAlignment = Alignment.BottomStart
             ) {
-                Column() {
-                    Checkbox(
-                        checked = checkedState,
-                        onCheckedChange = { isChecked ->
-                                checkedState = isChecked
-//                            checkedStateList[position] = isChecked
-                        }
-                    )
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Column() {
+                        /*Checkbox(
+                            checked = checkedState,
+                            onCheckedChange = { isChecked ->
+                                    checkedState = isChecked
+    //                            checkedStateList[position] = isChecked
+                            }
+                        )*/
+                        Text(text = menuItem.menu_name, style = TextStyle(color = Color.White, fontSize = 16.sp))
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(text = "Rp${menuItem.menu_price}", style = TextStyle(color = Color.White, fontSize = 16.sp))
+                    }
+                    if (menuItem.menu_qty.toInt() == 0) {
+                        Text(text = "Menu Habis", style = TextStyle(color = Color.Red, fontSize = 16.sp),
+                            textAlign = TextAlign.End
+                        )
+                    } else {
+                        IconButton(colors = IconButtonDefaults.iconButtonColors(Primary),modifier = Modifier.clip(CircleShape),onClick = {
+                                viewModel.selectedMenuState.value = menuItem
+                                Log.e("menuIds", "navController to product detail")
 
-                    Text(text = menuItem.menu_name, style = TextStyle(color = Color.White, fontSize = 16.sp))
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(text = "Rp${menuItem.menu_price}", style = TextStyle(color = Color.White, fontSize = 16.sp))
+                                checkedState = !checkedState
+                                Log.e("ProductItem", "checkedState: $checkedState")
+                                btnIcon.value = if (checkedState) {
+                                    Icons.Default.Check
+                                } else {
+                                    Icons.Default.Add
+                                }
+                                if (checkedState) {
+                                    selectedMenuId.value = selectedMenuId.value + menuItem.menu_id
+                                    Log.e("menuIds", "selectedMenuId: ${selectedMenuId.value}")
+                                } else {
+                                    selectedMenuId.value = selectedMenuId.value - menuItem.menu_id
+                                    Log.e("menuIds", "selectedMenuId: ${selectedMenuId.value}")
+                                }
+                        }) {
+                            Icon(imageVector = btnIcon.value, contentDescription = "", tint = Color.White, modifier = Modifier.clip(CircleShape))
+
+                        }
+//                        Button(
+//                            modifier = Modifier.clip(CircleShape),
+//                            shape = CircleShape,
+//                            onClick = {
+//                            viewModel.selectedMenuState.value = menuItem
+//                            Log.e("menuIds", "navController to product detail")
+//
+//                            checkedState = !checkedState
+//                            Log.e("ProductItem", "checkedState: $checkedState")
+//                            btnIcon.value = if (checkedState) {
+//                                Icons.Default.Check
+//                            } else {
+//                                Icons.Default.Add
+//                            }
+//                            if (checkedState) {
+//                                selectedMenuId.value = selectedMenuId.value + menuItem.menu_id
+//                                Log.e("menuIds", "selectedMenuId: ${selectedMenuId.value}")
+//                            } else {
+//                                selectedMenuId.value = selectedMenuId.value - menuItem.menu_id
+//                                Log.e("menuIds", "selectedMenuId: ${selectedMenuId.value}")
+//                            }
+//                        }) {
+//                            Icon(imageVector = btnIcon.value, contentDescription = "")
+//                        }
+                    }
                 }
             }
         }

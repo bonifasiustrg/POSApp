@@ -4,6 +4,7 @@ import DataStoreManager
 import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -46,28 +47,9 @@ fun ProductFoodScreen(navController: NavHostController, branchId: Int=1) {
     }
 
     val selectedMenuId = remember { mutableStateOf(emptyList<Int>()) }
-//    var checkedState = remember { mutableStateOf(false) }
     val checkedStateList = remember { mutableStateListOf<Boolean>() }
-//    val showCheckbox = remember { mutableStateOf(false) }
-//    val showCheckbox = remember {
-//        mutableStateOf(checkedStateList.any { it })
-//    }
 
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        /*Button(onClick = {
-            Log.e("selectedMenuId", selectedMenuId.toString())
-            val checkedIds = checkedStateList
-                .mapIndexed { index, isChecked -> index to isChecked }
-                .filter { (_, isChecked) -> isChecked }
-                .map { (index, _) -> menuListState[index].menu_id }
-            Log.e("checkedIds", checkedIds.toString())
-
-
-            navController.navigate("order_detail_screen/[1,2]")
-
-        }) {
-            Text(text = "Add to Cart")
-        }*/
+    Column(Modifier.fillMaxSize()) {
         when {
             menuListState.isEmpty() -> {
                 // Menampilkan indikator loading atau pesan lainnya saat data sedang diambil

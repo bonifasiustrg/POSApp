@@ -47,8 +47,8 @@ import kotlinx.coroutines.CoroutineScope
 @ExperimentalMaterial3Api
 @Composable
 fun CustomTopBar(title:String="Title",
-    snackbarHostState: SnackbarHostState, coroutineScope: CoroutineScope,
-    drawerState: DrawerState, openDialog: MutableState<Boolean>, navController: NavHostController
+    /*snackbarHostState: SnackbarHostState, coroutineScope: CoroutineScope,
+    drawerState: DrawerState, */openDialog: MutableState<Boolean>, navController: NavHostController
 ) {
     Box(
         modifier = Modifier
@@ -71,7 +71,7 @@ fun CustomTopBar(title:String="Title",
                     .fillMaxSize()
 //                    .padding(8.dp)
             ) {
-                Text(text = title/*"Beranda"*/, fontSize = 18.sp,
+                Text(text = title/*"Beranda"*/, fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Start,
                     modifier = Modifier.weight(2f)
@@ -205,7 +205,7 @@ fun BackTopBar(title: String, navController: NavHostController) {
                     )
                 }
 
-                Text(text = title/*"Beranda"*/, fontSize = 24.sp,
+                Text(text = title/*"Beranda"*/, fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Start,
                     modifier = Modifier.weight(2f)

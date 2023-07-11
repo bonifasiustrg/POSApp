@@ -3,10 +3,12 @@ package com.takasima.posapp.ui.screen.common.main
 import DataStoreManager
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,12 +20,14 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -57,10 +61,10 @@ fun LoginScreen(navController: NavHostController) {
     val context = LocalContext.current
 
     Text(text = "Login Screen")
-    var email = remember {
+    val email = remember {
         mutableStateOf("")
     }
-    var password = remember {
+    val password = remember {
         mutableStateOf("")
     }
 
@@ -97,22 +101,37 @@ fun LoginScreen(navController: NavHostController) {
 
 
 @Composable
-fun LoginButtonComponent(email: MutableState<String>, password: MutableState<String>, navController: NavController, context: Context) {
+fun ColumnScope.LoginButtonComponent(email: MutableState<String>, password: MutableState<String>, navController: NavController, context: Context) {
     val dataStoreManager = remember { DataStoreManager.getInstance(context) }
-
+    val clicked = remember {
+        mutableStateOf(false)
+    }
+    val loginStatus = remember {
+        mutableStateOf(false)
+    }
     Button(colors = ButtonDefaults.buttonColors(containerColor = Primary),
         modifier = Modifier.fillMaxWidth()
         ,onClick = {
-        login(email.value, password.value, navController, dataStoreManager = dataStoreManager)
-        password.value = ""
-        email.value = ""
-    }) {
+            if (email.value.isNotEmpty() || password.value.isNotEmpty()) {
+                clicked.value = true
+                login(email.value, password.value, navController, dataStoreManager = dataStoreManager, loginStatus = loginStatus)
+                Toast.makeText(context, "Login Successfully", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Try Again, email and password are empty", Toast.LENGTH_SHORT).show()
+            }
+            password.value = ""
+            email.value = ""
+        }) {
         Text(text = "LOGIN")
+    }
+    if (clicked.value) {
+        Log.e("clicked", "clicked")
+        CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
     }
 }
 
 @OptIn(DelicateCoroutinesApi::class)
-fun login(email: String, password: String, navController: NavController, dataStoreManager: DataStoreManager) {
+fun login(email: String, password: String, navController: NavController, dataStoreManager: DataStoreManager, loginStatus: MutableState<Boolean>) {
     val request = SignInRequest()
     request.email = email.trim()
     request.password = password.trim()
@@ -128,9 +147,9 @@ fun login(email: String, password: String, navController: NavController, dataSto
             if (response.isSuccessful) {
                 val user = response.body()
                 if (user != null && user.success == true) {
+                    loginStatus.value = true
 
                     Log.e("status", "Login Successfully")
-
                     Log.e("token", user.data?.token ?: "Token not available")
                     val token = user.data?.token ?: ""
                     GlobalScope.launch {
@@ -142,14 +161,19 @@ fun login(email: String, password: String, navController: NavController, dataSto
                     navController.navigate(route = "posapp")
                 } else {
                     Log.e(
+
                         "error",
                         "User response body is null, maybe email and password are wrong"
                     )
+//                    loginStatus.value = false
+
                 }
             } else {
                 // Handle error response
                 val errorBody = response.errorBody()?.string()
                 Log.e("error", "Error response: $errorBody")
+//                loginStatus.value = false
+
                 // Handle the error UI or show a toast message
                 // You can also extract the error message from the errorBody and display it to the user
             }
@@ -157,6 +181,8 @@ fun login(email: String, password: String, navController: NavController, dataSto
 
         override fun onFailure(call: Call<SignInResponse>, t: Throwable) {
             Log.e("error", t.message!! ?: "Unknown error occurred")
+//            loginStatus.value = false
+
         }
 
     })

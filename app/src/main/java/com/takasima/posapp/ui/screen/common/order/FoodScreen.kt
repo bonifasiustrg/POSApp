@@ -2,13 +2,19 @@ package com.takasima.posapp.ui.screen.common.order
 
 import DataStoreManager
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -50,25 +56,26 @@ fun FoodScreen(navController: NavHostController, branchId: Int=1) {
 //    val showCheckbox = remember {
 //        mutableStateOf(checkedStateList.any { it })
 //    }
+//    val listIdxMenu = remember { mutableStateOf(emptyList<Int>()) }
 
-    Column {
-//        Button(onClick = {
-//            Log.e("selectedMenuId", selectedMenuId.toString())
-//            val checkedIds = checkedStateList
-//                .mapIndexed { index, isChecked -> index to isChecked }
-//                .filter { (_, isChecked) -> isChecked }
-//                .map { (index, _) -> menuListState[index].menu_id }
-//            Log.e("checkedIds", checkedIds.toString())
-//
+    Column(Modifier.fillMaxSize()) {
+        if (selectedMenuId.value.isNotEmpty()) {
+            ExtendedFloatingActionButton(onClick = {
 //            navController.navigate("order_detail_screen/[5,6]")
-//
-//        }) {
-//            Text(text = "Add to Cart")
-//        }
+
+                Log.e("selectedMenuId", selectedMenuId.value.toString())
+                navController.navigate("order_detail_screen/${selectedMenuId.value}")
+
+            }) {
+                Icon(imageVector = Icons.Default.Add, contentDescription = "")
+                Text(text = "Add Order")
+            }
+        }
         when {
             menuListState.isEmpty() -> {
                 // Menampilkan indikator loading atau pesan lainnya saat data sedang diambil
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+
             }
 
             else -> {

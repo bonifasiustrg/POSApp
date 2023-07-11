@@ -19,6 +19,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -111,8 +112,6 @@ fun TextFieldCommon(labelValue: String, hintTextValue: String, changedValue: Mut
 @Composable
 fun MyTextFieldComponent(labelValue: String, icon: ImageVector, textValue: MutableState<String>) {
 
-//    val textValue = remember { mutableStateOf("") }
-    
     TextField(value = textValue.value,
         modifier = Modifier
             .fillMaxWidth()
@@ -122,7 +121,7 @@ fun MyTextFieldComponent(labelValue: String, icon: ImageVector, textValue: Mutab
         onValueChange = {
             textValue.value = it
         },
-        leadingIcon = { Icon(imageVector = icon, contentDescription = "", modifier = Modifier.padding(start = 4.dp))}
+        leadingIcon = { Icon(imageVector = icon, contentDescription = "", modifier = Modifier.padding(start = 4.dp))},
     )
 }
 

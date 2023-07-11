@@ -3,6 +3,7 @@ package com.takasima.posapp.ui.screen.common.product
 import DataStoreManager
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -50,22 +51,22 @@ import retrofit2.Response
 fun AddMenuScreen(navController: NavHostController) {
     val context = LocalContext.current
 
-    var branch_id = remember {
+    val branch_id = remember {
         mutableStateOf("")
     }
-    var menu_type = remember {
+    val menu_type = remember {
         mutableStateOf("")
     }
-    var menu_name = remember {
+    val menu_name = remember {
         mutableStateOf("")
     }
-    var menu_price = remember {
+    val menu_price = remember {
         mutableStateOf("")
     }
-    var menu_description = remember {
+    val menu_description = remember {
         mutableStateOf("")
     }
-    var menu_qty = remember {
+    val menu_qty = remember {
         mutableStateOf("")
     }
 
@@ -73,13 +74,8 @@ fun AddMenuScreen(navController: NavHostController) {
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(8.dp)
     ) {
-        Column(verticalArrangement = Arrangement.Center) {
-
-//            HeadingTextComponent3(value = "Branch Id")
-//            MyTextFieldComponent(labelValue = "Masukkan BranchId", Icons.Default.Edit, branch_id)
-//            Spacer(modifier = Modifier.height(8.dp))
+        Column(modifier = Modifier.padding(16.dp),verticalArrangement = Arrangement.Top) {
 
             HeadingTextComponent3(value = "Manu Type")
             MyTextFieldComponent(labelValue = "Masukkan Tipe menu...", Icons.Default.Edit, menu_type)
@@ -100,10 +96,10 @@ fun AddMenuScreen(navController: NavHostController) {
             HeadingTextComponent3(value = "Menu Quantity")
             MyTextFieldComponent(labelValue = "Masukkan jumlah item ...", Icons.Default.Edit, menu_qty)
             Spacer(modifier = Modifier.height(8.dp))
+
+            //upload image
             val base64Text = remember { mutableStateOf("") }
             RequestContentPermission(base64Text)
-//            ImageUploadAndConvert(context)
-//            Spacer(modifier = Modifier.height(48.dp))
 
             AddMenuButton(branch_id, menu_type, menu_name, menu_price, menu_description, menu_qty, base64Text, navController = navController, context)
         }
@@ -127,7 +123,8 @@ fun AddMenuButton(
     Button(colors = ButtonDefaults.buttonColors(containerColor = Primary),
         modifier = Modifier.fillMaxWidth()
         ,onClick = {
-            addMenu(branch_id, menu_type, menu_name, menu_price, menu_description, menu_qty, menu_image, navController, dataStoreManager/*, menuListState, errorMessageState*/)
+            addMenu(branch_id, menu_type, menu_name, menu_price, menu_description, menu_qty, menu_image, navController, dataStoreManager)
+            Toast.makeText(context, "Menu berhasil ditambahkan", Toast.LENGTH_SHORT).show()
             branch_id.value = ""
             menu_type.value = ""
             menu_name.value = ""

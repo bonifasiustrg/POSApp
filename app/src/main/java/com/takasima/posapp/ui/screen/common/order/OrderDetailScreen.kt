@@ -1,5 +1,6 @@
 package com.takasima.posapp.ui.screen.common.order
 
+import android.content.Context
 import android.icu.number.Scale.none
 import android.util.Log
 import android.widget.Toast
@@ -84,7 +85,7 @@ fun OrderDetailScreen(navController: NavHostController, menuIds:String/*="[6]"*/
                         var qty = remember { mutableStateOf(0) }
 
 
-                        SelectedMenuCard(menuItem = menuListState[index], listItem = listItem, qty, totalPrice)
+                        SelectedMenuCard(menuItem = menuListState[index], listItem = listItem, qty, totalPrice, context)
 
                     }
                 })
@@ -143,7 +144,8 @@ fun OrderDetailScreen(navController: NavHostController, menuIds:String/*="[6]"*/
 fun SelectedMenuCard(menuItem: MenuById,
                      listItem: MutableState<List<Map<String, Int>>>,
                      qty: MutableState<Int>,
-                     totalPrice: MutableState<Int>
+                     totalPrice: MutableState<Int>,
+                     context: Context
 
 ) {
     Row(Modifier.fillMaxHeight()) {
@@ -161,7 +163,9 @@ fun SelectedMenuCard(menuItem: MenuById,
         Spacer(modifier = Modifier.width(16.dp))
 
         IconButton(onClick = {
-            if (qty.value > 0) {
+            if (menuItem.menu_qty!!.toInt() == 0) {
+                Toast.makeText(context, "Stok Habis", Toast.LENGTH_SHORT).show()
+            } else if  (qty.value > 0 && qty.value <= menuItem.menu_qty!!.toInt()) {
                 qty.value--
 //                totalPrice.value = menuItem.menu_price!!.toInt() * qty.value
                 addItemOrUpdateQty(menuItem.menu_id!!, qty.value, listItem)
@@ -174,7 +178,13 @@ fun SelectedMenuCard(menuItem: MenuById,
             Text(text = qty.value.toString())
         }
         IconButton(onClick = {
-            qty.value++
+            if (menuItem.menu_qty!!.toInt() == 0) {
+                Toast.makeText(context, "Stok Habis", Toast.LENGTH_SHORT).show()
+            }else if (qty.value >= 0 && qty.value <= menuItem.menu_qty!!.toInt()) {
+                qty.value++
+            } else {
+                Toast.makeText(context, "Stok tidak mencukupi", Toast.LENGTH_SHORT).show()
+            }
 //            totalPrice.value = menuItem.menu_price!!.toInt() * qty.value
             addItemOrUpdateQty(menuItem.menu_id!!, qty.value, listItem)
 

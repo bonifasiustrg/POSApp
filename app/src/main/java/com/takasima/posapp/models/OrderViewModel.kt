@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class OrderViewModel() : ViewModel() {
+
     private val orderRepository = OrderRepository()
     private val _response: MutableLiveData<Response<CreateOrderResponse>> = MutableLiveData()
     val response: LiveData<Response<CreateOrderResponse>> get() = _response

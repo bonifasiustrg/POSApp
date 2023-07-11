@@ -42,18 +42,25 @@ import com.takasima.posapp.ui.screen.owner.branch.ShopBranchScreen
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun POSApp(mainNavController: NavHostController) {
-
     val navController = rememberNavController()
-//    Text(text = "Dashboard Owner Screen")
-    val snackBarHostState = remember { SnackbarHostState() }
-    val coroutineScope = rememberCoroutineScope()
-    val drawerState  = rememberDrawerState(initialValue = DrawerValue.Closed)
-    val scrollState = rememberScrollState()
+//    val snackBarHostState = remember { SnackbarHostState() }
+//    val coroutineScope = rememberCoroutineScope()
+//    val drawerState  = rememberDrawerState(initialValue = DrawerValue.Closed)
     val openDialog =  remember { mutableStateOf(false) }
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
+    val altAppBarTitle = when (currentRoute) {
+        "profile_screen" -> "Profile"
+        "product_add_screen" -> "Add Product"
+        "product_detail_screen/{menuId}" -> "Product Detail"
+        "order_detail_screen/{menuIds}" -> "Order Detail"
+        "branch_add_screen" -> "Add Branch"
+        "profile_screen" -> "Profile"
+
+        else -> "Aplikasi"
+    }
     val mainAppBarTitle = when (currentRoute) {
         BottomMenu.Orders.route -> BottomMenu.Orders.title
         BottomMenu.Products.route -> BottomMenu.Products.title
@@ -62,39 +69,32 @@ fun POSApp(mainNavController: NavHostController) {
 
         else -> "Aplikasi"
     }
-    val altAppBarTitle = when (currentRoute) {
-        "profile_screen" -> "Profile"
-        else -> "Aplikasi"
-    }
 
+    val bottomBarItem = listOf<String>(
+        BottomMenu.Orders.route,
+        BottomMenu.Products.route,
+        BottomMenu.Histories.route,
+//        BottomMenu.Shops.route
+    )
     Scaffold(
         topBar = {
-            if (currentRoute == BottomMenu.Products.route) {
-                CustomProductTopBar(
-                    openDialog = openDialog,
-                    navController = navController
-                )
-            } else if (currentRoute != "profile_screen") {
-//            CustomBottomNavigation(menuItems, navController)
-                CustomTopBar(
-                    title = mainAppBarTitle,
-                    snackbarHostState = snackBarHostState,
-                    coroutineScope = coroutineScope,
-                    drawerState = drawerState,
-                    openDialog = openDialog,
-                    navController
-                )
-            } else {
-                BackTopBar(title = altAppBarTitle, navController = navController)
-            }
+                if (currentRoute in bottomBarItem) {
+                    CustomTopBar(
+                        title = mainAppBarTitle,
+                        openDialog = openDialog,
+                        navController
+                    )
+                } else {
+                    BackTopBar(title = altAppBarTitle, navController = navController)
+                }
             },
         bottomBar = {
-            if (currentRoute != "profile_screen") {
-//            CustomBottomNavigation(menuItems, navController)
+            if (currentRoute in bottomBarItem) {
                     BottomMenuScreen(navController)
             }
         }
     ){paddingValues ->
+
         NavHost(navController, startDestination = BottomMenu.Orders.route, Modifier.padding(paddingValues)) {
             composable(BottomMenu.Orders.route){
                 OrderScreen(navController = navController)
@@ -133,13 +133,10 @@ fun POSApp(mainNavController: NavHostController) {
                 arguments = listOf(navArgument("menuIds") { type = NavType.StringType })
             ) {backStackEntry ->
                 val menuIds = backStackEntry.arguments?.getString("menuIds")
-//                val menuIdsList = menuIdsArray?.toList()?.map { it.toInt() }?.toCollection(ArrayList())
                 Log.e("POSApp order detail", "go to order detail $menuIds")
                 OrderDetailScreen(navController, menuIds!!)
             }
-            /*composable("order_detail_screen") {
-                OrderDetailScreen(navController)
-            }*/
+
             composable("product_food_screen") {
                 ProductFoodScreen(navController)
             }
