@@ -112,7 +112,11 @@ fun SelectedMenuCard(menuItem:MenuById) {
 
         HeadingTextComponent3(value = "Tipe Menu")
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = menuItem.menu_type!!)
+        Text(text = when (menuItem.menu_type!!) {
+            "daily_stock" -> "Stok Harian"
+            "unit_stock" -> "Stok Unit"
+            else -> "Stok Default"
+        })
         Spacer(modifier = Modifier.height(16.dp))
 
 

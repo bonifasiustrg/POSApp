@@ -6,24 +6,37 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -40,6 +53,7 @@ import com.takasima.posapp.data.product.CreateProductResponse
 import com.takasima.posapp.ui.components.BottomMenu
 import com.takasima.posapp.ui.components.HeadingTextComponent3
 import com.takasima.posapp.ui.components.MyTextFieldComponent
+import com.takasima.posapp.ui.components.TextFieldCommon
 import com.takasima.posapp.ui.theme.Primary
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -47,6 +61,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddMenuScreen(navController: NavHostController) {
     val context = LocalContext.current
@@ -69,7 +84,9 @@ fun AddMenuScreen(navController: NavHostController) {
     val menu_qty = remember {
         mutableStateOf("")
     }
-
+    val coffeeDrinks = arrayOf("Daily Stock", "Unit Stock")
+    var expanded by remember { mutableStateOf(false) }
+    var selectedText by remember { mutableStateOf(coffeeDrinks[0]) }
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -77,9 +94,50 @@ fun AddMenuScreen(navController: NavHostController) {
     ) {
         Column(modifier = Modifier.padding(16.dp),verticalArrangement = Arrangement.Top) {
 
-            HeadingTextComponent3(value = "Manu Type")
-            MyTextFieldComponent(labelValue = "Masukkan Tipe menu...", Icons.Default.Edit, menu_type)
+            HeadingTextComponent3(value = "Menu Type")
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                ExposedDropdownMenuBox(
+                    expanded = expanded,
+                    onExpandedChange = {
+                        expanded = !expanded
+                    }
+                ) {
+                    TextField(
+                        value = selectedText,
+                        onValueChange = {},
+                        readOnly = true,
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                        modifier = Modifier.menuAnchor()
+                    )
+
+                    ExposedDropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        coffeeDrinks.forEach { item ->
+                            DropdownMenuItem(
+                                text = { Text(text = item) },
+                                onClick = {
+                                    selectedText = item
+                                    menu_type.value = when (item) {
+                                        "Daily Stock" -> "daily_stock"
+                                        "Unit Stock" -> "unit_stock"
+                                        else -> "undefined_stock"
+                                    }
+                                    expanded = false
+                                    Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+//            MyTextFieldComponent(labelValue = "Masukkan Tipe menu...", Icons.Default.Edit, menu_type)
             Spacer(modifier = Modifier.height(8.dp))
+
 
             HeadingTextComponent3(value = "Menu Name")
             MyTextFieldComponent(labelValue = "Masukkan nama menu...", Icons.Default.Edit, menu_name)
@@ -230,6 +288,8 @@ fun addMenu(
         }
     })
 }
+
+
 
 @Preview
 @Composable
