@@ -172,7 +172,7 @@ fun CustomProductTopBar(title:String="Title",
 }
 
 @Composable
-fun BackTopBar(title: String, navController: NavHostController) {
+fun BackTopBar(title: String, navController: NavHostController, role: String) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -195,13 +195,15 @@ fun BackTopBar(title: String, navController: NavHostController) {
 //                    .padding(8.dp)
             ) {
                 IconButton(onClick = {
-                    navController.navigate(BottomMenu.Orders.route)
+                    when (role) {
+                        "Staff" -> navController.navigate(BottomMenu.Orders.route)
+                        "Owner" -> navController.navigate(BottomMenu.Products.route)
+                    }
                 }) {
 
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
                         contentDescription = "Back",
-//                        modifier = Modifier.padding(horizontal = 8.dp)
                     )
                 }
 
@@ -222,5 +224,5 @@ fun BackTopBar(title: String, navController: NavHostController) {
 fun CustomTopBarPrev() {
 //    CustomTopBar(snackbarHostState =remember { SnackbarHostState() }, coroutineScope = rememberCoroutineScope(),
 //        drawerState = rememberDrawerState(initialValue = DrawerValue.Closed), openDialog = remember { mutableStateOf(false) }, navController = rememberNavController())
-    BackTopBar(title = "TITLE", navController = rememberNavController())
+    BackTopBar(title = "TITLE", navController = rememberNavController(), "Staff")
 }

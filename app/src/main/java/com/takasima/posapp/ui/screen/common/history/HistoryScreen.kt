@@ -90,10 +90,10 @@ fun TransactionItem(historyData: HistoryData, navController: NavHostController) 
         )
         Column(modifier = Modifier.padding(8.dp)) {
             Text(text = historyData.order_id.toString(), fontWeight = FontWeight.Bold)
-            Text(text = historyData.user_id)
+//            Text(text = historyData.user_id)
             Text(text = historyData.order_note)
             Text(text = historyData.order_status)
-            Text(text = historyData.created_at)
+//            Text(text = historyData.created_at)
         }
 //        Text(text = "13.46", textAlign = TextAlign.End, modifier = Modifier
 //            .weight(1f)

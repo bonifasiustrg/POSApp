@@ -48,7 +48,8 @@ fun ShopBranchScreen(navController: NavController) {
     Column(Modifier.fillMaxSize()) {
         Log.e("branch", "tes1")
 
-        Button(onClick = {
+        Button(
+            modifier = Modifier.align(Alignment.CenterHorizontally),onClick = {
             navController.navigate("branch_add_screen")
         }) {
             Text("Add Branch")

@@ -1,5 +1,6 @@
 package com.takasima.posapp.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,14 +23,27 @@ import androidx.navigation.compose.rememberNavController
 import com.takasima.posapp.ui.theme.Primary
 
 @Composable
-fun BottomMenuScreen(navController: NavController) {
-    val menuItems = listOf(
+fun BottomMenuScreen(navController: NavController, storedRole: String?) {
+    val menuItemss = listOf(
         BottomMenu.Orders,
         BottomMenu.Products,
         BottomMenu.Histories,
         BottomMenu.Shops
     )
+    val menuItems: List<BottomMenu>
+    when (storedRole) {
+        "Staff" -> {
+            menuItems = menuItemss.dropLast(1)
+        }
+        "Owner" -> {
+            menuItems = menuItemss.drop(1)
+        }
+        else -> {
+            menuItems = menuItemss
+        }
+    }
 
+    Log.d("BottomMenuScreen", "menuItems: $menuItems")
     NavigationBar(contentColor = Color.Black /*item color*/,
         containerColor = Color.White /*Bot nav container color*/,
         modifier = Modifier.height(78.dp).clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
@@ -89,5 +103,5 @@ fun BottomMenuScreen(navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun BottomMenuPrev() {
-    BottomMenuScreen(navController = rememberNavController())
+    BottomMenuScreen(navController = rememberNavController(), storedRole = "Staff")
 }

@@ -22,6 +22,8 @@ class SignInResponse {
 
 //        @SerializedName("password")   @Expose
 //        var password: String? = null
+        @SerializedName("role")   @Expose
+        var role: String? = null
 
         @SerializedName("token")   @Expose
         var token: String? = null

@@ -14,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -39,10 +40,16 @@ import com.takasima.posapp.ui.screen.common.product.ProductScreen
 import com.takasima.posapp.ui.screen.common.product.ProductOption
 import com.takasima.posapp.ui.screen.owner.branch.AddBranchScreen
 import com.takasima.posapp.ui.screen.owner.branch.ShopBranchScreen
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun POSApp(mainNavController: NavHostController) {
+    val ctx = LocalContext.current
+    val dataStoreManager = DataStoreManager.getInstance(ctx)
+    val storedRole = runBlocking { dataStoreManager.getAuthRole.first() }
+    Log.e("storedRole", storedRole.toString())
     val navController = rememberNavController()
 //    val snackBarHostState = remember { SnackbarHostState() }
 //    val coroutineScope = rememberCoroutineScope()
@@ -71,12 +78,26 @@ fun POSApp(mainNavController: NavHostController) {
         else -> "Aplikasi"
     }
 
-    val bottomBarItem = listOf<String>(
+    val bottomBarItems = listOf<String>(
         BottomMenu.Orders.route,
         BottomMenu.Products.route,
         BottomMenu.Histories.route,
-//        BottomMenu.Shops.route
+        BottomMenu.Shops.route
     )
+    val bottomBarItem: List<String>
+    when (storedRole) {
+        "Staff" -> {
+            bottomBarItem = bottomBarItems.dropLast(1)
+        }
+        "Owner" -> {
+            bottomBarItem = bottomBarItems.drop(1)
+        }
+        else -> {
+            bottomBarItem = bottomBarItems
+        }
+    }
+    Log.d("BottomBarItem", "bottomBarItem: $bottomBarItem")
+
     Scaffold(
         topBar = {
                 if (currentRoute in bottomBarItem) {
@@ -86,17 +107,23 @@ fun POSApp(mainNavController: NavHostController) {
                         navController
                     )
                 } else {
-                    BackTopBar(title = altAppBarTitle, navController = navController)
+                    BackTopBar(title = altAppBarTitle, navController = navController, storedRole!!)
                 }
             },
         bottomBar = {
             if (currentRoute in bottomBarItem) {
-                    BottomMenuScreen(navController)
+                    BottomMenuScreen(navController, storedRole)
             }
         }
     ){paddingValues ->
 
-        NavHost(navController, startDestination = BottomMenu.Orders.route, Modifier.padding(paddingValues)) {
+        NavHost(navController,
+            startDestination = when (storedRole) {
+                "Staff" -> BottomMenu.Orders.route
+                "Owner" -> BottomMenu.Products.route
+                else -> BottomMenu.Orders.route
+                                                 },
+            Modifier.padding(paddingValues)) {
             composable(BottomMenu.Orders.route){
                 OrderScreen(navController = navController)
             }

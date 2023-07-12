@@ -15,11 +15,11 @@ class DataStoreManager(val context: Context) {
     private val USER_EMAIL = stringPreferencesKey(name = "user_email")
     private val USER_PASSWORD = stringPreferencesKey(name = "user_password")
     private val USER_TOKEN = stringPreferencesKey(name = "user_token")
+    private val USER_ROLE = stringPreferencesKey(name = "user_role")
 
     companion object {
         @SuppressLint("StaticFieldLeak")
         private var INSTANCE: DataStoreManager? = null
-
         fun getInstance(context: Context): DataStoreManager {
             if (INSTANCE == null) {
                 synchronized(DataStoreManager::class.java) {
@@ -29,24 +29,6 @@ class DataStoreManager(val context: Context) {
             return INSTANCE!!
         }
     }
-/*
-
-    suspend fun setUserName(name: String) {
-        withContext(Dispatchers.IO) {
-            context.datastore.edit { preferences ->
-                preferences[USER_EMAIL] = name
-            }
-        }
-    }
-
-    suspend fun setUserPassword(pass: String) {
-        withContext(Dispatchers.IO) {
-            context.datastore.edit { preferences ->
-                preferences[USER_PASSWORD] = pass
-            }
-        }
-    }
-*/
 
     suspend fun setUserToken(authToken: String) {
         withContext(Dispatchers.IO) {
@@ -55,24 +37,27 @@ class DataStoreManager(val context: Context) {
             }
         }
     }
-/*
-
-    val getUserName: Flow<String> = context.datastore.data.map { preferences ->
-        preferences[USER_EMAIL] ?: ""
-    }
-
-    val getUserPassword: Flow<String> = context.datastore.data.map { preferences ->
-        preferences[USER_PASSWORD] ?: ""
-    }
-*/
-
     val getAuthToken: Flow<String?> = context.datastore.data.map { preferences ->
         preferences[USER_TOKEN] ?: ""
     }
-
     suspend fun clearUserToken() {
         context.datastore.edit { preferences ->
             preferences.remove(USER_TOKEN)
+        }
+    }
+    suspend fun setUserRole(authRole: String) {
+        withContext(Dispatchers.IO) {
+            context.datastore.edit { preferences ->
+                preferences[USER_ROLE] = authRole
+            }
+        }
+    }
+    val getAuthRole: Flow<String?> = context.datastore.data.map { preferences ->
+        preferences[USER_ROLE] ?: ""
+    }
+    suspend fun clearUserRole() {
+        context.datastore.edit { preferences ->
+            preferences.remove(USER_ROLE)
         }
     }
 }

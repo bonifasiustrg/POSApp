@@ -34,7 +34,7 @@ import kotlinx.coroutines.runBlocking
 
 @Composable
 fun ProductFoodScreen(navController: NavHostController, branchId: Int=1) {
-    val orderViewModel: OrderViewModel = viewModel()
+//    val orderViewModel: OrderViewModel = viewModel()
     val ctx = LocalContext.current
     val dataStoreManager = DataStoreManager.getInstance(ctx)
     val storedToken = runBlocking { dataStoreManager.getAuthToken.first() }

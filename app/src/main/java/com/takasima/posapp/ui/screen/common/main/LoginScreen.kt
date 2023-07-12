@@ -151,9 +151,12 @@ fun login(email: String, password: String, navController: NavController, dataSto
 
                     Log.e("status", "Login Successfully")
                     Log.e("token", user.data?.token ?: "Token not available")
+                    Log.e("role", user.data?.role ?: "Role not available")
                     val token = user.data?.token ?: ""
+                    val role = user.data?.role ?: ""
                     GlobalScope.launch {
                         dataStoreManager.setUserToken(token)
+                        dataStoreManager.setUserRole(role)
                     }
 
                     Log.e("email", user.data?.user?.email ?: "Email not available")
