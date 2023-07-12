@@ -157,7 +157,14 @@ fun InvoiceScreen(navController: NavHostController, orderId: Int) {
                 }
             }
             OutlinedButton(onClick = {
-                navController.navigate("history_screen")
+//                navController.popBackStack()
+                navController.navigate("history_screen") {
+                    popUpTo("history_screen") {
+                        inclusive = true
+
+                    }
+                    navController.popBackStack()
+                }
             },
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {

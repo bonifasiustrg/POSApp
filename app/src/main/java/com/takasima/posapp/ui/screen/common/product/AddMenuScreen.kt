@@ -201,7 +201,13 @@ fun addMenu(
                         MenuRepository.fetchMenuData()
                     }*/
 
-                    navController.navigate(route = BottomMenu.Products.route)
+                    navController.navigate(route = BottomMenu.Products.route) {
+//                        popUpTo("history_screen") {
+//                            inclusive = true
+//
+//                        }
+                        navController.popBackStack()
+                    }
                 } else {
                     Log.e(
                         "error1",

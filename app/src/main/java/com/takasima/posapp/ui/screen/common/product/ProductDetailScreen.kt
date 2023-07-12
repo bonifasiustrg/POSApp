@@ -77,7 +77,13 @@ fun ProductDetailScreen(navController: NavHostController, menuId: String) {
         Button(modifier = Modifier
             .align(Alignment.CenterHorizontally)
             .padding(bottom = 32.dp),onClick = {
-            navController.navigate("product_screen")
+            navController.navigate("product_screen") {
+//                popUpTo("product_screen") {
+//                    inclusive = true
+//
+//                }
+                navController.popBackStack()
+            }
         }) {
             Text(text = "Edit Menu")
         }
