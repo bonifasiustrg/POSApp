@@ -3,7 +3,7 @@ package com.takasima.posapp.data.history
 data class GetHistoryResponse(
     val success: Boolean,
     val message: String,
-    val data: List<HistoryData>
+    val data: List<HistoryData>?
 )
 data class HistoryData(
     val order_id: Int,

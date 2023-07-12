@@ -28,6 +28,7 @@ import com.takasima.posapp.ui.components.BottomMenuScreen
 import com.takasima.posapp.ui.components.CustomProductTopBar
 import com.takasima.posapp.ui.components.CustomTopBar
 import com.takasima.posapp.ui.screen.common.history.HistoryScreen
+import com.takasima.posapp.ui.screen.common.history.InvoiceScreen
 import com.takasima.posapp.ui.screen.common.main.ProfileScreen
 import com.takasima.posapp.ui.screen.common.order.OrderDetailScreen
 import com.takasima.posapp.ui.screen.common.order.OrderScreen
@@ -145,6 +146,13 @@ fun POSApp(mainNavController: NavHostController) {
             }
             composable("branch_add_screen") {
                 AddBranchScreen(navController)
+            }
+            composable("invoice_screen/{orderId}",
+                arguments = listOf(navArgument("orderId") { type = NavType.IntType })
+            ) {backStackEntry ->
+                val orderId = backStackEntry.arguments?.getInt("orderId")
+                Log.e("POSApp invoice", "go to invoice $orderId")
+                InvoiceScreen(navController, orderId!!)
             }
 
         }

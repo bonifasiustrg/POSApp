@@ -32,9 +32,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,7 +60,10 @@ import com.takasima.posapp.models.OrderViewModel
 import com.takasima.posapp.ui.components.HeadingTextComponent3
 import com.takasima.posapp.ui.components.MyTextFieldComponent
 import com.takasima.posapp.ui.theme.Primary
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 @Composable
@@ -67,11 +72,12 @@ fun OrderDetailScreen(navController: NavHostController, menuIds:String/*="[6]"*/
     val dataStoreManager = remember { DataStoreManager.getInstance(context) }
     val storedToken = runBlocking { dataStoreManager.getAuthToken.first() }
     val orderViewModel: OrderViewModel = viewModel()
-
+    val scope = rememberCoroutineScope()
     val menuViewModel: MenuViewModel = viewModel()
     val tes:  List<Int> = listOf(0)
     Log.e("tes", tes.toString())
     val menuListState by menuViewModel.menuByIDList
+    val needLoading = remember { mutableStateOf(false) }
 
     // Fetch menu data when the screen is displayed
     LaunchedEffect(Unit) {
@@ -79,16 +85,23 @@ fun OrderDetailScreen(navController: NavHostController, menuIds:String/*="[6]"*/
     }
     Log.e("Product Detail Screen", "menuListState: $menuListState")
 //    val listItem: List<Map<String, Int>> = emptyList()
+
+
     val listItem = remember { mutableStateOf(emptyList<Map<String, Int>>()) }
+    Log.e("ear order", "${listItem.value}")
     val orderNote = remember { mutableStateOf("") }
 
-    val totalPrice = remember { mutableStateOf(0) }
+//    var totalPriceInit = countTotalMenuPrice(menuListState)
+//    Log.e("totalPriceInit", "$totalPriceInit")
+//    val totalPrice = remember { mutableStateOf(countTotalMenuPrice(menuListState)) }
+
     Column(
         Modifier
             .padding(16.dp)
             .fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
 
         Column() {
+
             when {
                 menuListState.isEmpty() -> {
                     // Menampilkan indikator loading atau pesan lainnya saat data sedang diambil
@@ -97,46 +110,38 @@ fun OrderDetailScreen(navController: NavHostController, menuIds:String/*="[6]"*/
                 }
 
                 else -> {
+                    val totalPriceInit = countTotalMenuPrice(menuListState, listItem)
+                    Log.e("totalPriceInit", "$totalPriceInit")
+                    val totalPrice = remember { mutableStateOf(countTotalMenuPrice(menuListState, listItem)) }
+
+
                     LazyColumn(content = {
+
                         items(menuListState.size) { index ->
                             Log.e("tes", "tes2")
-                            val qty = remember { mutableStateOf(0) }
+                            val qty = remember { mutableStateOf(1) }
 
 
                             SelectedMenuCard(menuItem = menuListState[index], listItem = listItem, qty, totalPrice, context)
                             Spacer(modifier = Modifier.height(8.dp))
                         }
                     })
+
+
+
+                    Spacer(modifier = Modifier.height(8.dp))
+                    MyTextFieldComponent(labelValue = "Catatan", icon = Icons.Default.Edit,textValue = orderNote)
+                    Spacer(modifier = Modifier.height(24.dp))
+                    HeadingTextComponent3(value = "Ringkasan Pesanan")
+
+                    Row(Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.SpaceBetween) {
+                        Text(text = "Total Harga", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(text = "Rp${ totalPrice.value }", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                    }
                 }
 
             }
-
-            Spacer(modifier = Modifier.height(8.dp))
-            MyTextFieldComponent(labelValue = "Catatan", icon = Icons.Default.Edit,textValue = orderNote)
-            Spacer(modifier = Modifier.height(24.dp))
-            HeadingTextComponent3(value = "Ringkasan Pesanan")
-
-            Row(Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(text = "Total Harga", fontWeight = FontWeight.Bold, fontSize = 18.sp)
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Rp${ totalPrice.value }", fontWeight = FontWeight.Bold, fontSize = 18.sp)
-            }
-
-        /*Button(
-            colors = ButtonDefaults.buttonColors(containerColor = Primary),
-            onClick = {
-            Log.e("tes", "order note -> ${orderNote.value.toString()}")
-            Log.e("tes", "list item -> ${ listItem.value.toString() }")
-            val json = mapOf(
-                "order_note" to orderNote.value,
-                "listItem" to listItem.value
-            )
-
-            Log.e("tes", "json -> ${ json.toString() }")
-        }) {
-            Text(text = "Lihat isi pesanan")
-
-        }*/
 
         }
         Row(verticalAlignment = Alignment.Bottom) {
@@ -163,12 +168,27 @@ fun OrderDetailScreen(navController: NavHostController, menuIds:String/*="[6]"*/
                     )
                     Log.e("FoodScreen", "$convertListItem")
                     Log.e("FoodScreen", "create request order")
-                    if (storedToken != null) {
+
+
+                    if (storedToken != null ) {
                         orderViewModel.createOrder(request, storedToken)
                         Log.e("FoodScreen", "order process in viewmodel")
 
                         Toast.makeText(context, "Pesanan berhasil dibuat", Toast.LENGTH_SHORT).show()
-                        navController.navigate("order_screen")
+
+                        scope.launch {
+                            delay(1000L)
+                            Log.e("after create order", "order id -> ${orderViewModel.response.value}")
+                            val orderId = orderViewModel.response.value?.body()?.data?.orderId
+                            Log.e("FoodScreen", "order id -> $orderId")
+
+                            if (orderId != null) {
+                                Log.e("otw invoice", "order id is not null")
+                                navController.navigate("invoice_screen/${orderId}")
+                            } else {
+                                Log.e("otw invoice", "order id is null")
+                            }
+                        }
                     } else {
                         Toast.makeText(context, "Pesanan gagal dibuat", Toast.LENGTH_SHORT).show()
                         Log.e("FoodScreen", "Token is null")
@@ -203,7 +223,9 @@ fun SelectedMenuCard(menuItem: MenuById,
         )
         Spacer(modifier = Modifier.width(16.dp))
 
-        Column(modifier = Modifier.fillMaxWidth().weight(1f)) {
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .weight(1f)) {
             Text(text = menuItem.menu_name!!, fontWeight = FontWeight.Bold)
 //            Text(text = "Rp${menuItem.menu_price!!.toInt() * qty.value}")
             Text(text = "Rp${tempItemTotalPrice.value}")
@@ -212,9 +234,9 @@ fun SelectedMenuCard(menuItem: MenuById,
 
         Row(horizontalArrangement = Arrangement.End) {
             IconButton(onClick = {
-                if (menuItem.menu_qty!!.toInt() == 0) {
-                    Toast.makeText(context, "Stok Habis", Toast.LENGTH_SHORT).show()
-                } else if  (qty.value > 0 && qty.value <= menuItem.menu_qty!!.toInt()) {
+                if (menuItem.menu_qty!!.toInt() == 1) {
+                    Toast.makeText(context, "Jumlah item minimal 1", Toast.LENGTH_SHORT).show()
+                } else if  (qty.value > 1 && qty.value <= menuItem.menu_qty.toInt()) {
                     qty.value--
                     totalPrice.value = totalPrice.value - tempItemTotalPrice.value
                     tempItemTotalPrice.value = menuItem.menu_price!!.toInt() * qty.value
@@ -265,5 +287,19 @@ fun addItemOrUpdateQty(menuId: Int, qty: Int, listItem: MutableState<List<Map<St
         if (none { it["menu_id"] == menuId }) {
             add(mapOf("menu_id" to menuId, "qty" to qty))
         }
+    }
+}
+fun countTotalMenuPrice(menuList: List<MenuById>, listItem: MutableState<List<Map<String, Int>>>): Int {
+    var totalPrice = 0
+    for (menu in menuList) {
+        totalPrice += menu.menu_price?.toInt() ?: 0
+        addItemOrUpdateQty(menu.menu_id!!, 1, listItem)
+    }
+    return totalPrice
+}
+@Composable
+fun DelayComposable() {
+    LaunchedEffect(key1 = Unit) {
+        delay(1000)
     }
 }

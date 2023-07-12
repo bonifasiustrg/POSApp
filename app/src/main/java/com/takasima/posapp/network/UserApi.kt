@@ -13,6 +13,7 @@ import com.takasima.posapp.data.product.GetMenuByIdList
 import com.takasima.posapp.data.product.GetMenuListResponse
 import com.takasima.posapp.data.branch.GetBranchListResponse
 import com.takasima.posapp.data.history.GetHistoryResponse
+import com.takasima.posapp.data.history.GetOrderByIdResponse
 import com.takasima.posapp.data.product.DeleteProductResponse
 import retrofit2.Call
 import retrofit2.Response
@@ -63,22 +64,20 @@ interface UserApi {
         @Header("Authorization") token: String
     ): Response<GetBranchListResponse>
 
-    /*@POST("order/create")
-    fun createOrder(
-        @Body createOrderRequest: CreateOrderRequest,
-        @Header("Authorization") token: String // Menambahkan header Authorization
-    ): Call<CreateBranchResponse>*/
     @POST("order/create")
     suspend fun createOrder(
         @Body createOrderRequest: CreateOrderRequest,
         @Header("Authorization") token: String // Adding Authorization header
     ): Response<CreateOrderResponse>
-//    @POST("menu/update-image/{id}")
-//    suspend fun updateImage(@Path("id") id: Int, @Body requestBody: RequestBody): Response<YourResponseModel>
     @GET("order/list")
     suspend fun getHistory(
         @Header("Authorization") token: String
     ): Response<GetHistoryResponse>
 
+    @GET("order/detail/{orderId}")
+    suspend fun getOrderById(
+        @Header("Authorization") token: String,
+        @Path("orderId") orderId: Int
+    ): Response<GetOrderByIdResponse>
 
 }
