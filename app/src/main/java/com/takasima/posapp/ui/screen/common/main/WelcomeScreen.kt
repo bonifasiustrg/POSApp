@@ -28,7 +28,7 @@ import com.takasima.posapp.ui.components.WidthButtonInverse
 fun WelcomeScreen(navController:NavHostController) {
 //    val navController = rememberNavController()
 
-    Text(text = "Welcome Screen")
+//    Text(text = "Welcome Screen")
 
     Column(modifier = Modifier
         .fillMaxSize()

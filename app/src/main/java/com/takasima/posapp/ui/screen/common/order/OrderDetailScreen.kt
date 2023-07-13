@@ -100,7 +100,7 @@ fun OrderDetailScreen(navController: NavHostController, menuIds:String/*="[6]"*/
             .padding(16.dp)
             .fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
 
-        Column() {
+        Column(/*modifier = Modifier.fillMaxHeight(0.9f)*/) {
 
             when {
                 menuListState.isEmpty() -> {
@@ -115,7 +115,7 @@ fun OrderDetailScreen(navController: NavHostController, menuIds:String/*="[6]"*/
                     val totalPrice = remember { mutableStateOf(countTotalMenuPrice(menuListState, listItem)) }
 
 
-                    LazyColumn(content = {
+                    LazyColumn(Modifier.fillMaxHeight(0.7f), content = {
 
                         items(menuListState.size) { index ->
                             Log.e("tes", "tes2")
