@@ -70,7 +70,7 @@ fun AddMenuScreen(navController: NavHostController) {
         mutableStateOf("")
     }
     val menu_type = remember {
-        mutableStateOf("")
+        mutableStateOf("daily_stock")
     }
     val menu_name = remember {
         mutableStateOf("")
@@ -255,9 +255,6 @@ fun addMenu(
                     Log.e("menu", menuImage ?: "Menu not available")
                     Log.e("menu", menuStatus ?: "Menu not available")
 
-                    /*runBlocking {
-                        MenuRepository.fetchMenuData()
-                    }*/
 
                     navController.navigate(route = BottomMenu.Products.route) {
 //                        popUpTo("history_screen") {

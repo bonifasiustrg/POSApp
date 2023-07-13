@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.takasima.posapp.repository.MenuRepository
 import com.takasima.posapp.data.product.Menu
 import com.takasima.posapp.data.product.MenuById
+import com.takasima.posapp.data.product.UpdateMenuImageResponse
 import kotlinx.coroutines.launch
 
 class MenuViewModel : ViewModel() {
@@ -50,24 +51,30 @@ class MenuViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val response = menuRepository.deleteMenuItem(token, id)
-                _deleteSuccess.value = response?.success
+                _deleteSuccess.value = response.isSuccessful
                 Log.e("MenuViewModel", "deleteMenuItem: $response $id")
             } catch (e: Exception) {
                 Log.e("MenuViewModel", "deleteMenuItem: ${e.message}")
             }
         }
     }
-
-//    private val _updateImageStatus = MutableLiveData<Result<YourResponseModel>>()
-//    val updateImageStatus: LiveData<Result<YourResponseModel>> get() = _updateImageStatus
 //
-//    fun updateImage(id: Int, base64Image: String) {
+//    private val _updateImageResult = MutableLiveData<UpdateMenuImageResponse>()
+//    val updateImageResult: LiveData<UpdateMenuImageResponse> get() = _updateImageResult
+//    fun updateMenuImage(token:String, id: Int, image: String) {
 //        viewModelScope.launch {
+//            Log.e("MenuViewModel", "updateMenuImage parameter: $id $image")
 //            try {
-//                val response = repository.updateImage(id, base64Image)
-//                _updateImageStatus.value = Result.success(response.body())
+////                val result = menuRepository.updateMenuImage(token, id, image)
+////                Log.e("MenuViewModel", "updateMenuImage: $result")
+////                _updateImageResult.value = result.isSuccessful.let {
+////                    result.body()
+////                }
+//                val response = menuRepository.updateMenuImage("Bearer $token", id, image)
+//                _updateImageResult.value = response.body()
+//                Log.e("MenuViewModel", "deleteMenuItem: $response $id")
 //            } catch (e: Exception) {
-//                _updateImageStatus.value = Result.failure(e)
+//                Log.e("MenuViewModel", "updateMenuImage: ${e.message}")
 //            }
 //        }
 //    }

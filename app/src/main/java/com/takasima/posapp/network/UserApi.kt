@@ -15,6 +15,7 @@ import com.takasima.posapp.data.branch.GetBranchListResponse
 import com.takasima.posapp.data.history.GetHistoryResponse
 import com.takasima.posapp.data.history.GetOrderByIdResponse
 import com.takasima.posapp.data.product.DeleteProductResponse
+import com.takasima.posapp.data.product.UpdateMenuImageResponse
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
@@ -36,11 +37,17 @@ interface UserApi {
         @Header("Authorization") token: String // Menambahkan header Authorization
     ): Call<CreateProductResponse>
 
-    @POST("menu/delete/2")
+    @POST("menu/delete/{id}")
     suspend fun deleteMenuItem(
-        @Header("Authorization") token: String,
-//        @Path("id") id: Int
+        @Path("id") id: Int,
+        @Header("Authorization") token: String
     ): Response<DeleteProductResponse>
+//    @POST("menu/update-image/{id}")
+//    suspend fun updateMenuImage(
+//        @Header("Authorization") token: String,
+//        @Path("id") id: Int,
+//        @Query("menu_image") menuImage: String
+//    ): Response<UpdateMenuImageResponse>
 
     @GET("menu/list")
     suspend fun getMenuList(

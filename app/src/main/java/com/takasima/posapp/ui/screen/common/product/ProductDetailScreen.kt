@@ -12,12 +12,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -106,6 +111,19 @@ fun SelectedMenuCard(menuItem:MenuById) {
                 .fillMaxSize()
                 .align(Alignment.CenterHorizontally)
         )
+//        val base64Text = remember { mutableStateOf("") }
+//        RequestContentPermission(base64Text)
+//        Log.e("PDS", "base64Text: $base64Text")
+//        LaunchedEffect(base64Text.value.i) {
+//            storedToken?.let { menuViewModel.updateMenuImage(storedToken, menuItem.menu_id!!, base64Text.value) }
+//        }
+//        Log.e("PDS", "respon: ${menuViewModel.updateImageResult.value}")
+////        IconButton(onClick = {
+////
+////        }) {
+////            Icon(imageVector = Icons.Default.Edit, contentDescription = "")
+////        }
+
         Text(text = menuItem.menu_name!!, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
         Text(text = "Rp${menuItem.menu_price!!}", fontSize = 24.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
 

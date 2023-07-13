@@ -6,6 +6,7 @@ import com.takasima.posapp.network.Retro
 import com.takasima.posapp.network.UserApi
 import com.takasima.posapp.data.product.Menu
 import com.takasima.posapp.data.product.MenuById
+import com.takasima.posapp.data.product.UpdateMenuImageResponse
 import retrofit2.Response
 
 class MenuRepository {
@@ -43,16 +44,17 @@ class MenuRepository {
         return emptyList()
     }
 
-    suspend fun deleteMenuItem(token:String, menuId: Int): DeleteProductResponse? {
-        val response = apiService.deleteMenuItem(token/*, menuId*/)
-        if (response.isSuccessful) {
-            return response.body()
-        }
-        return DeleteProductResponse("", "delete gagal di Repo", false)
+    suspend fun deleteMenuItem(token:String, menuId: Int): Response<DeleteProductResponse> {
+        return apiService.deleteMenuItem(menuId,"Bearer $token")
     }
 
-//    suspend fun updateImage(id: Int, base64Image: String): Response<YourResponseModel> {
-//        val requestBody = RequestBody.create(MediaType.parse("image/*"), base64Image)
-//        return apiService.updateImage(id, requestBody)
+//    suspend fun updateMenuImage(token:String, id: Int, image: String): Response<UpdateMenuImageResponse> {
+//        val response = apiService.updateMenuImage(token ,id, image)
+//        Log.e("MenuRepository", "updateMenuImage: $response")
+//        if (response.isSuccessful) {
+//            return response
+//        } else {
+//            throw Exception("Error: ${response.code()}")
+//        }
 //    }
 }
