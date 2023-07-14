@@ -34,6 +34,7 @@ import com.takasima.posapp.ui.screen.common.main.ProfileScreen
 import com.takasima.posapp.ui.screen.common.order.OrderDetailScreen
 import com.takasima.posapp.ui.screen.common.order.OrderScreen
 import com.takasima.posapp.ui.screen.common.product.AddMenuScreen
+import com.takasima.posapp.ui.screen.common.product.EditProductScreen
 import com.takasima.posapp.ui.screen.common.product.ProductDetailScreen
 import com.takasima.posapp.ui.screen.common.product.ProductFoodScreen
 import com.takasima.posapp.ui.screen.common.product.ProductScreen
@@ -157,6 +158,15 @@ fun POSApp(mainNavController: NavHostController) {
 //                val menuIdsList = menuIdsArray?.toList()?.map { it.toInt() }?.toCollection(ArrayList())
                 Log.e("POSApp product detail", "go to product detail $menuId")
                 ProductDetailScreen(navController, menuId!!)
+            }
+
+            composable("product_edit_screen/{menuId}",
+                arguments = listOf(navArgument("menuId") { type = NavType.StringType })
+            ) {backStackEntry ->
+                val menuId = backStackEntry.arguments?.getString("menuId")
+//                val menuIdsList = menuIdsArray?.toList()?.map { it.toInt() }?.toCollection(ArrayList())
+                Log.e("POSApp product detail", "go to product detail $menuId")
+                EditProductScreen(navController, menuId!!)
             }
 
             composable("order_detail_screen/{menuIds}",

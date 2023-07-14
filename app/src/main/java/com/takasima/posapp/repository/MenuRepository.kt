@@ -48,13 +48,14 @@ class MenuRepository {
         return apiService.deleteMenuItem(menuId,"Bearer $token")
     }
 
-//    suspend fun updateMenuImage(token:String, id: Int, image: String): Response<UpdateMenuImageResponse> {
-//        val response = apiService.updateMenuImage(token ,id, image)
-//        Log.e("MenuRepository", "updateMenuImage: $response")
-//        if (response.isSuccessful) {
-//            return response
-//        } else {
-//            throw Exception("Error: ${response.code()}")
-//        }
-//    }
+    suspend fun updateMenuImage(token:String, id: String, menu_image: String): Response<UpdateMenuImageResponse> {
+        val response = apiService.updateMenuImage("Bearer $token",id, menu_image)
+        Log.e("MenuRepository", "updateMenuImage: ${response.body()}")
+        if (response.isSuccessful) {
+            return response
+        } else {
+            Log.e("MenuRepository", "updateMenuImage: ${response.code()}")
+            throw Exception("API request failed with code ${response.code()}")
+        }
+    }
 }

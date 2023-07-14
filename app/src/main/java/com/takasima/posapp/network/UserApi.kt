@@ -104,4 +104,11 @@ interface UserApi {
         @Query("branch_id") branchId: Int)
             : Response<GetStaffResponse>
 
+
+    @POST("menu/update-image/{id}")
+    suspend fun updateMenuImage(
+        @Header("Authorization") token: String,
+        @Path("id") id: String,
+        @Query("menu_image") menu_image: String
+    ): Response<UpdateMenuImageResponse>
 }

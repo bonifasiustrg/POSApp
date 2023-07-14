@@ -58,24 +58,21 @@ class MenuViewModel : ViewModel() {
             }
         }
     }
-//
-//    private val _updateImageResult = MutableLiveData<UpdateMenuImageResponse>()
-//    val updateImageResult: LiveData<UpdateMenuImageResponse> get() = _updateImageResult
-//    fun updateMenuImage(token:String, id: Int, image: String) {
-//        viewModelScope.launch {
-//            Log.e("MenuViewModel", "updateMenuImage parameter: $id $image")
-//            try {
-////                val result = menuRepository.updateMenuImage(token, id, image)
-////                Log.e("MenuViewModel", "updateMenuImage: $result")
-////                _updateImageResult.value = result.isSuccessful.let {
-////                    result.body()
-////                }
-//                val response = menuRepository.updateMenuImage("Bearer $token", id, image)
-//                _updateImageResult.value = response.body()
-//                Log.e("MenuViewModel", "deleteMenuItem: $response $id")
-//            } catch (e: Exception) {
-//                Log.e("MenuViewModel", "updateMenuImage: ${e.message}")
-//            }
-//        }
-//    }
+
+    private val _updateImageResult = mutableStateOf<UpdateMenuImageResponse?>(null)
+    val updateImageResult: State<UpdateMenuImageResponse?> = _updateImageResult
+
+    fun updateMenuImage(token:String, id: String, encodedImage: String) {
+        viewModelScope.launch {
+            Log.e("UpdateImageMenuViewModel", "updateMenuImage:\ntoken: $token \nid $id \nstringimg $encodedImage")
+            try {
+                val result = menuRepository.updateMenuImage(token, id, encodedImage)
+                Log.e("UpdateImageMenuViewModel", "updateMenuImage: ${result.body()}")
+                _updateImageResult.value = result.body()
+            } catch (e: Exception) {
+                // Handle error case
+                Log.e("UpdateImageMenuViewModelCatch", "updateMenuImage: ${e.message}")
+            }
+        }
+    }
 }
