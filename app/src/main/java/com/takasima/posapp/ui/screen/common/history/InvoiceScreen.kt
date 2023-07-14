@@ -1,6 +1,7 @@
 package com.takasima.posapp.ui.screen.common.history
 
 import android.util.Log
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.OutlinedButton
@@ -39,6 +41,7 @@ import androidx.navigation.NavHostController
 import com.takasima.posapp.models.HistoryViewModel
 import com.takasima.posapp.models.MenuViewModel
 import com.takasima.posapp.ui.theme.Neutral
+import com.takasima.posapp.ui.theme.PrimarySecond
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
@@ -156,7 +159,13 @@ fun InvoiceScreen(navController: NavHostController, orderId: Int) {
                     }
                 }
             }
-            OutlinedButton(onClick = {
+            OutlinedButton(
+                border = BorderStroke(1.dp, PrimarySecond),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    containerColor = Color.White,
+                    contentColor = PrimarySecond
+                ),
+                onClick = {
 //                navController.popBackStack()
                 navController.navigate("history_screen") {
                     popUpTo("history_screen") {
@@ -168,7 +177,7 @@ fun InvoiceScreen(navController: NavHostController, orderId: Int) {
             },
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
-                Text(text = "Back", fontWeight = FontWeight.Bold)
+                Text(text = "Kemabli", fontWeight = FontWeight.Bold)
             }
         }
 

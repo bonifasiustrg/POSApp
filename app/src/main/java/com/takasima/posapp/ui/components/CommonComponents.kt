@@ -60,7 +60,8 @@ fun NormalTextComponent(value: String) {
             fontWeight = FontWeight.Normal,
             fontStyle = FontStyle.Normal
         ),
-        color = Color.Black
+        color = Color.Black,
+        textAlign = TextAlign.Center
     )
 }
 @Composable

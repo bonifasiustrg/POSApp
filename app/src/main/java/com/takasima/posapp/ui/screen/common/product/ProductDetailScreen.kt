@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -40,6 +41,8 @@ import coil.compose.AsyncImage
 import com.takasima.posapp.data.product.MenuById
 import com.takasima.posapp.models.MenuViewModel
 import com.takasima.posapp.ui.components.HeadingTextComponent3
+import com.takasima.posapp.ui.theme.Primary
+import com.takasima.posapp.ui.theme.PrimarySecond
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
@@ -79,9 +82,10 @@ fun ProductDetailScreen(navController: NavHostController, menuId: String) {
                 })
             }
         }
-        Button(modifier = Modifier
-            .align(Alignment.CenterHorizontally)
-            .padding(bottom = 32.dp),onClick = {
+        Button(colors = ButtonDefaults.buttonColors(containerColor = PrimarySecond),
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(bottom = 32.dp),onClick = {
             navController.navigate("product_edit_screen/$menuId")
         }) {
             Text(text = "Edit Menu")

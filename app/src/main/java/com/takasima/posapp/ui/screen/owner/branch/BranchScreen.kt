@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,6 +32,7 @@ import androidx.navigation.compose.rememberNavController
 import com.takasima.posapp.data.branch.Branch
 import com.takasima.posapp.models.BranchViewModel
 import com.takasima.posapp.ui.theme.Neutral
+import com.takasima.posapp.ui.theme.PrimarySecond
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
@@ -51,10 +53,11 @@ fun ShopBranchScreen(navController: NavHostController) {
         Log.e("branch", "tes1")
 
         Button(
+            colors = ButtonDefaults.buttonColors(containerColor = PrimarySecond),
             modifier = Modifier.align(Alignment.CenterHorizontally),onClick = {
             navController.navigate("branch_add_screen")
         }) {
-            Text("Add Branch")
+            Text("Tambahkan Cabang")
         }
 
         when {

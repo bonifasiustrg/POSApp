@@ -145,7 +145,7 @@ fun RequestContentPermission(base64Text: MutableState<String>) {
             border = BorderStroke(1.dp, Primary),
             modifier = Modifier.align(CenterHorizontally)
         ) {
-            Text(text = "Pick image")
+            Text(text = "Upload foto")
         }
 
         Spacer(modifier = Modifier.height(12.dp))

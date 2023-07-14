@@ -26,6 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -34,6 +35,7 @@ import com.takasima.posapp.models.MenuViewModel
 import com.takasima.posapp.models.OrderViewModel
 import com.takasima.posapp.ui.components.OrderImageCard3
 import com.takasima.posapp.ui.components.ProductImageCard2
+import com.takasima.posapp.ui.theme.PrimarySecond
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
@@ -93,7 +95,10 @@ fun FoodScreen(navController: NavHostController, branchId: Int=1) {
         Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Bottom) {
 
             if (selectedMenuId.value.isNotEmpty()) {
-                ExtendedFloatingActionButton(onClick = {
+                ExtendedFloatingActionButton(
+                    containerColor = PrimarySecond,
+                    contentColor = Color.White,
+                    onClick = {
 //            navController.navigate("order_detail_screen/[5,6]")
                     Log.e("selectedMenuId", selectedMenuId.value.toString())
                     navController.navigate("order_detail_screen/${selectedMenuId.value}")
@@ -102,7 +107,7 @@ fun FoodScreen(navController: NavHostController, branchId: Int=1) {
                     modifier = Modifier.align(Alignment.End).padding(end = 16.dp, bottom = 16.dp)
                 ) {
                     Icon(imageVector = Icons.Default.Add, contentDescription = "")
-                    Text(text = "Add Order")
+                    Text(text = "Tambah Transaksi")
                 }
             }
         }

@@ -60,6 +60,7 @@ fun ProfileScreen(navController: NavHostController) {
 
 
         WidthButton(value = "Edit Profile", onClick = { /*TODO*/ })
+
         WidthButton(value = "Logout", onClick = {
             // Saat tombol Logout ditekan
             runBlocking {

@@ -63,23 +63,23 @@ fun AddStaffScreen(navController: NavHostController, branchId:Int) {
         Spacer(modifier = Modifier.height(8.dp))
 
         HeadingTextComponent3(value = "Nama Lengkap")
-        MyTextFieldComponent(labelValue = "Masukkan Branch Name", Icons.Default.Edit, name)
+        MyTextFieldComponent(labelValue = "Masukkan Nama Staff", Icons.Default.Edit, name)
         Spacer(modifier = Modifier.height(8.dp))
 
         HeadingTextComponent3(value = "Email")
-        MyTextFieldComponent(labelValue = "Masukkan Tipe menu...", Icons.Default.Edit, email)
+        MyTextFieldComponent(labelValue = "Masukkan Email", Icons.Default.Edit, email)
         Spacer(modifier = Modifier.height(8.dp))
 
         HeadingTextComponent3(value = "Password")
-        MyTextFieldComponent(labelValue = "Masukkan nama menu...", Icons.Default.Edit, password)
+        MyTextFieldComponent(labelValue = "Buat Password", Icons.Default.Edit, password)
         Spacer(modifier = Modifier.height(8.dp))
 
         HeadingTextComponent3(value = "No HP")
-        MyTextFieldComponent(labelValue = "Masukkan harga menu...", Icons.Default.Edit, no_hp)
+        MyTextFieldComponent(labelValue = "Masukkan No HP", Icons.Default.Edit, no_hp)
         Spacer(modifier = Modifier.height(8.dp))
 
         HeadingTextComponent3(value = "Alamat Staff")
-        MyTextFieldComponent(labelValue = "Masukkan harga menu...", Icons.Default.Edit, address)
+        MyTextFieldComponent(labelValue = "Masukkan alamat", Icons.Default.Edit, address)
         Spacer(modifier = Modifier.height(8.dp))
 
         AddStaffButton(branchId, name, email, password, no_hp, address, navController, ctx, storedToken!!)
@@ -144,7 +144,7 @@ fun addStaff(
             if (response.isSuccessful) {
 //                val user = response.body()
                 val productResponse = response.body()
-                if (productResponse != null && productResponse.success == true) {
+                if (productResponse != null && productResponse.success) {
 
                     Log.e("status", productResponse.message.toString())
 

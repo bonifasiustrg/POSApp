@@ -49,7 +49,7 @@ fun WelcomeScreen(navController:NavHostController) {
         NormalTextComponent(value = "Kini mengakses dan monitoring kasir lebih mudah dalam satu genggaman")
 
         Spacer(modifier = Modifier.padding(64.dp))
-        WidthButton(value = "LOGIN", onClick = {
+        WidthButton(value = "SELANJUTNYA", onClick = {
             navController.navigate("login_screen")
         })
         Spacer(modifier = Modifier.padding(8.dp))

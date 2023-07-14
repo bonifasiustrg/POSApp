@@ -29,6 +29,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -38,6 +39,8 @@ import com.takasima.posapp.ui.components.TabItem
 import com.takasima.posapp.ui.components.WidthButton
 import com.takasima.posapp.ui.screen.common.ProductDrinkScreen
 import com.takasima.posapp.ui.screen.owner.branch.AddBranchScreen
+import com.takasima.posapp.ui.theme.Primary
+import com.takasima.posapp.ui.theme.PrimarySecond
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
@@ -63,7 +66,10 @@ fun ProductScreen(navController: NavHostController) {
 
     Scaffold(
         floatingActionButton = {
-            ExtendedFloatingActionButton(onClick = {
+            ExtendedFloatingActionButton(
+                containerColor = PrimarySecond,
+                contentColor = Color.White,
+                onClick = {
                 navController.navigate("product_add_screen")
             }) {
                 Icon(
@@ -71,7 +77,7 @@ fun ProductScreen(navController: NavHostController) {
                     contentDescription = "Add",
                     modifier = Modifier.padding(end = 4.dp)
                 )
-                Text(text = "Add Menu")
+                Text(text = "Tambahkan Menu")
             }
         }
     ) { paddingValues ->

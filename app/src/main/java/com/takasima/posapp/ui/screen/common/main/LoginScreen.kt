@@ -86,11 +86,11 @@ fun LoginScreen(navController: NavHostController) {
             NormalTextComponent(value = "Masuk ke dalam akun untuk pantau transaksimu")
             Spacer(Modifier.height(20.dp))
 
-            HeadingTextComponent3(value = "Username")
-            MyTextFieldComponent(labelValue = "Masukkan id/email anda...", Icons.Default.Email, email)
+            HeadingTextComponent3(value = "Email")
+            MyTextFieldComponent(labelValue = "Masukkan email", Icons.Default.Email, email)
             Spacer(modifier = Modifier.height(8.dp))
             HeadingTextComponent3(value = "Password")
-            PasswordTextFieldComponent(labelValue = "Masukkan password anda...", Icons.Default.Lock, password)
+            PasswordTextFieldComponent(labelValue = "Masukkan password", Icons.Default.Lock, password)
 
             Spacer(modifier = Modifier.height(48.dp))
 

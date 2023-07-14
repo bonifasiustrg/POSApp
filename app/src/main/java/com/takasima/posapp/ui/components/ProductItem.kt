@@ -160,10 +160,10 @@ fun ProductImageCard2(menuItem: Menu, navController: NavHostController,
                     if (showProductOption.value) {
                         Row() {
                             IconButton(onClick = {
-                                navController.navigate("product_edit_screen/[${menuItem.menu_id}]")
+                                navController.navigate("product_edit_screen/${menuItem.menu_id}")
                             }) {
 
-                                Icon(imageVector = Icons.Default.Edit, contentDescription = "")
+                                Icon(imageVector = Icons.Default.Edit, contentDescription = "", tint = Color.Yellow)
                             }
 
                             IconButton(onClick = {
@@ -172,10 +172,12 @@ fun ProductImageCard2(menuItem: Menu, navController: NavHostController,
                                 showProductOption.value = false
                                 navController.navigate("product_screen")
                             }) {
-                                Icon(imageVector = Icons.Default.Delete, contentDescription = "")
+                                Icon(imageVector = Icons.Default.Delete, contentDescription = "", tint = Color.Red)
                             }
                         }
-                        Button(onClick = {
+                        Button(
+                            colors = ButtonDefaults.buttonColors(containerColor = Primary),
+                            onClick = {
                             showProductOption.value = false
                         }) {
                             Text(text = "Batal")

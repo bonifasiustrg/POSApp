@@ -49,6 +49,7 @@ import com.takasima.posapp.ui.components.BottomMenu
 import com.takasima.posapp.ui.components.HeadingTextComponent3
 import com.takasima.posapp.ui.components.MyTextFieldComponent
 import com.takasima.posapp.ui.theme.Primary
+import com.takasima.posapp.ui.theme.PrimarySecond
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -204,18 +205,16 @@ fun EditProductScreen(navController: NavHostController, menuId: String) {
 
                     }
                 }
-            Button(modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(bottom = 32.dp),onClick = {
+            Button(
+                colors = ButtonDefaults.buttonColors(PrimarySecond),
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(bottom = 32.dp),onClick = {
                 navController.navigate("product_screen") {
-//                popUpTo("product_screen") {
-//                    inclusive = true
-//
-//                }
                     navController.popBackStack()
                 }
             }) {
-                Text(text = "Simpan")
+                Text(text = "Simpan Perubahan")
             }
 
 

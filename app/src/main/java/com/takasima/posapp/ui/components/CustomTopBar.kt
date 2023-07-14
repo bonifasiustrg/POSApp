@@ -69,7 +69,7 @@ fun CustomTopBar(title:String="Title",
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxSize()
-//                    .padding(8.dp)
+                    .padding(horizontal = 8.dp)
             ) {
                 Text(text = title/*"Beranda"*/, fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
@@ -77,14 +77,13 @@ fun CustomTopBar(title:String="Title",
                     modifier = Modifier.weight(2f)
                 )
 
-                IconButton(onClick = { /*TODO*/ }) {
-
-                    Icon(
-                        imageVector = Icons.Outlined.Notifications,
-                        contentDescription = "Message icon",
-//                        modifier = Modifier.padding(horizontal = 8.dp)
-                    )
-                }
+//                IconButton(onClick = { /*TODO*/ }) {
+//
+//                    Icon(
+//                        imageVector = Icons.Outlined.Notifications,
+//                        contentDescription = "Message icon"
+//                    )
+//                }
                 Image(painter = painterResource(id = R.drawable.profile), contentDescription = "",
                     modifier = Modifier
                         .size(35.dp)

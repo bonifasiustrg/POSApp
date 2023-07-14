@@ -59,11 +59,10 @@ fun HistoryScreen(navController: NavHostController) {
             else -> {
                 // Menampilkan daftar menu
                 LazyColumn() {
-
                     items(listHistory.size) { index ->
                         TransactionItem(historyData = listHistory[index], navController)
 
-                }
+                    }
                 }
             }
         }
@@ -89,15 +88,10 @@ fun TransactionItem(historyData: HistoryData, navController: NavHostController) 
                 .size(24.dp)
         )
         Column(modifier = Modifier.padding(8.dp)) {
-            Text(text = historyData.order_id.toString(), fontWeight = FontWeight.Bold)
-//            Text(text = historyData.user_id)
-            Text(text = historyData.order_note)
-            Text(text = historyData.order_status)
-//            Text(text = historyData.created_at)
+            Text(text = "No Pesanan: ${historyData.order_id}", fontWeight = FontWeight.Bold)
+            Text(text = "Status: ${historyData.order_status}")
+            Text(text = "Waktu Transaksi: ${historyData.created_at}")
         }
-//        Text(text = "13.46", textAlign = TextAlign.End, modifier = Modifier
-//            .weight(1f)
-//            .padding(8.dp))
     }
 }
 
