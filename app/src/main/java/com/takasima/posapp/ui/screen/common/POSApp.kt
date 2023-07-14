@@ -39,7 +39,9 @@ import com.takasima.posapp.ui.screen.common.product.ProductFoodScreen
 import com.takasima.posapp.ui.screen.common.product.ProductScreen
 import com.takasima.posapp.ui.screen.common.product.ProductOption
 import com.takasima.posapp.ui.screen.owner.branch.AddBranchScreen
+import com.takasima.posapp.ui.screen.owner.branch.AddStaffScreen
 import com.takasima.posapp.ui.screen.owner.branch.ShopBranchScreen
+import com.takasima.posapp.ui.screen.owner.branch.StaffScreen
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
@@ -182,6 +184,20 @@ fun POSApp(mainNavController: NavHostController) {
                 InvoiceScreen(navController, orderId!!)
             }
 
+            composable("branch_staff_screen/{branchId}",
+                arguments = listOf(navArgument("branchId") { type = NavType.IntType })
+            ) {backStackEntry ->
+                val branchId = backStackEntry.arguments?.getInt("branchId")
+                Log.e("POSApp order detail", "go to order detail $branchId")
+                StaffScreen(navController, branchId!!)
+            }
+            composable("add_staff_screen/{branchId}",
+                arguments = listOf(navArgument("branchId") { type = NavType.IntType })
+            ) {backStackEntry ->
+                val branchId = backStackEntry.arguments?.getInt("branchId")
+                Log.e("POSApp order detail", "go to order detail $branchId")
+                AddStaffScreen(navController, branchId!!)
+            }
         }
     }
 

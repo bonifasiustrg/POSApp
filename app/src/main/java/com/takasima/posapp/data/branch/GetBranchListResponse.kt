@@ -8,6 +8,8 @@ data class GetBranchListResponse(
 
 data class Branch(
     // Definisikan atribut-atribut menu yang sesuai dengan struktur JSON
+    val branch_id: Int,
+//    val owner_id: String,
     val branch_name: String,
     val branch_address: String,
     val branch_phone: String,

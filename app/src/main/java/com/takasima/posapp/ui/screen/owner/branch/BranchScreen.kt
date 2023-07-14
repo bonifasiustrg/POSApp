@@ -2,6 +2,7 @@ package com.takasima.posapp.ui.screen.owner.branch
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.takasima.posapp.data.branch.Branch
 import com.takasima.posapp.models.BranchViewModel
@@ -33,7 +35,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
 @Composable
-fun ShopBranchScreen(navController: NavController) {
+fun ShopBranchScreen(navController: NavHostController) {
     val ctx = LocalContext.current
     val dataStoreManager = DataStoreManager.getInstance(ctx)
     val storedToken = runBlocking { dataStoreManager.getAuthToken.first() }
@@ -70,7 +72,7 @@ fun ShopBranchScreen(navController: NavController) {
                     content =  {
                         items(branchListState.size) { index ->
                             Box(modifier = Modifier.padding(8.dp)) {
-                                BranchItem(branchListState[index])
+                                BranchItem(branchListState[index], navController)
                                 Spacer(modifier = Modifier.height(8.dp))
                             }
                         }
@@ -84,12 +86,17 @@ fun ShopBranchScreen(navController: NavController) {
 
 }
 @Composable
-fun BranchItem(branch: Branch) {
+fun BranchItem(branch: Branch, navController: NavHostController) {
     Row(
         Modifier
             .fillMaxWidth()
             .padding(8.dp)
             .background(Neutral)
+            .clickable {
+                navController.navigate("branch_staff_screen/${branch.branch_id}") {
+                    navController.popBackStack()
+                }
+            }
     ) {
         Column(modifier = Modifier.padding(8.dp)) {
             Text(text = branch.branch_name, fontWeight = FontWeight.Bold)

@@ -5,6 +5,8 @@ import com.takasima.posapp.data.product.CreateProductRequest
 import com.takasima.posapp.data.product.CreateProductResponse
 import com.takasima.posapp.data.branch.CreateBranchRequest
 import com.takasima.posapp.data.branch.CreateBranchResponse
+import com.takasima.posapp.data.branch.CreateStaffRequest
+import com.takasima.posapp.data.branch.CreateStaffResponse
 import com.takasima.posapp.data.login.SignInRequest
 import com.takasima.posapp.data.login.SignInResponse
 import com.takasima.posapp.data.order.CreateOrderRequest
@@ -12,6 +14,7 @@ import com.takasima.posapp.data.order.CreateOrderResponse
 import com.takasima.posapp.data.product.GetMenuByIdList
 import com.takasima.posapp.data.product.GetMenuListResponse
 import com.takasima.posapp.data.branch.GetBranchListResponse
+import com.takasima.posapp.data.branch.GetStaffResponse
 import com.takasima.posapp.data.history.GetHistoryResponse
 import com.takasima.posapp.data.history.GetOrderByIdResponse
 import com.takasima.posapp.data.product.DeleteProductResponse
@@ -65,6 +68,11 @@ interface UserApi {
         @Body createProductRequest: CreateBranchRequest,
         @Header("Authorization") token: String // Menambahkan header Authorization
     ): Call<CreateBranchResponse>
+    @POST("staff/create")
+    fun createStaff(
+        @Body createStaffRequest: CreateStaffRequest,
+        @Header("Authorization") token: String // Menambahkan header Authorization
+    ): Call<CreateStaffResponse>
 
     @GET("branch/list")
     suspend fun getBranchList(
@@ -76,6 +84,8 @@ interface UserApi {
         @Body createOrderRequest: CreateOrderRequest,
         @Header("Authorization") token: String // Adding Authorization header
     ): Response<CreateOrderResponse>
+
+
     @GET("order/list")
     suspend fun getHistory(
         @Header("Authorization") token: String
@@ -86,5 +96,12 @@ interface UserApi {
         @Header("Authorization") token: String,
         @Path("orderId") orderId: Int
     ): Response<GetOrderByIdResponse>
+
+
+    @GET("staff/list")
+    suspend fun getStaffByBranch(
+        @Header("Authorization") token: String,
+        @Query("branch_id") branchId: Int)
+            : Response<GetStaffResponse>
 
 }
